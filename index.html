@@ -20,10 +20,12 @@
         body { display: flex; height: 100vh; background-color: var(--bg-main); overflow: hidden; color: var(--text-main); }
         
         /* Sidebar */
-        .sidebar { width: 320px; background-color: var(--sidebar-bg); color: var(--sidebar-text); display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(76, 46, 53, 0.05); }
-        .sidebar-profile { padding: 25px 20px; text-align: center; background-color: var(--sidebar-hover); cursor: pointer; }
+        .sidebar { width: 320px; background-color: var(--sidebar-bg); color: var(--sidebar-text); display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(76, 46, 53, 0.05); z-index: 10; }
+        .sidebar-profile { padding: 25px 20px; text-align: center; background-color: var(--sidebar-hover); cursor: pointer; transition: 0.2s; }
+        .sidebar-profile:hover { background-color: #eeb1be; }
         .sidebar-scroll { overflow-y: auto; flex-grow: 1; padding: 15px 0; }
-        .dropdown-btn { width: 100%; padding: 12px 20px; background: none; border: none; text-align: left; font-weight: 600; cursor: pointer; color: var(--sidebar-text); display: flex; justify-content: space-between; }
+        .dropdown-btn { width: 100%; padding: 12px 20px; background: none; border: none; text-align: left; font-weight: 600; cursor: pointer; color: var(--sidebar-text); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+        .dropdown-btn:hover { background-color: rgba(255, 255, 255, 0.3); }
         .dropdown-container { display: none; background-color: rgba(255, 255, 255, 0.4); list-style: none; padding: 5px 0; }
         .dropdown-item { padding: 9px 20px 9px 35px; font-size: 13px; cursor: pointer; transition: 0.2s; }
         .dropdown-item:hover { background-color: var(--accent-pink); }
@@ -34,7 +36,9 @@
         .top-header { background: #fff; padding: 20px 30px; border-bottom: 1px solid #f0d5da; font-weight: 600; color: var(--primary-dark); font-size: 18px;}
         .main-content { padding: 30px; overflow-y: auto; flex-grow: 1; }
         .content-card { background: white; padding: 40px; border-radius: 12px; display: none; border-top: 5px solid var(--accent-pink); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
-        .content-card.active { display: block; }
+        .content-card.active { display: block; animation: fadeIn 0.4s ease-in-out; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* Typography & Elements */
         h1 { margin-bottom: 15px; color: var(--primary-dark); }
@@ -43,10 +47,10 @@
         /* Buttons & Forms */
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
-        .form-input { width: 100%; padding: 12px; border: 1px solid #f0d5da; border-radius: 6px; font-family: 'Inter'; outline: none; }
-        .form-input:focus { border-color: var(--active-highlight); }
+        .form-input { width: 100%; padding: 12px; border: 1px solid #f0d5da; border-radius: 6px; font-family: 'Inter'; outline: none; transition: 0.2s; }
+        .form-input:focus { border-color: var(--active-highlight); box-shadow: 0 0 5px rgba(212, 114, 133, 0.3); }
         
-        .btn-action { padding: 12px 20px; background: var(--primary-dark); color: white; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.2s; }
+        .btn-action { padding: 12px 20px; background: var(--primary-dark); color: white; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .btn-action:hover { background: var(--active-highlight); }
         
         /* Quiz Specific */
@@ -60,8 +64,19 @@
         .btn-next { width: auto; background: var(--active-highlight); }
         
         .result-box { text-align: center; padding: 30px; background: #fffbfb; border: 1px solid #f0d5da; border-radius: 8px; }
-        .score-circle { width: 120px; height: 120px; background: var(--primary-dark); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: bold; margin: 0 auto 20px auto; }
+        .score-circle { width: 120px; height: 120px; background: var(--primary-dark); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: bold; margin: 0 auto 20px auto; box-shadow: 0 4px 10px rgba(76, 46, 53, 0.2); }
         .result-detail { font-size: 16px; margin: 5px 0; }
+
+        /* Laporan Table */
+        .table-laporan { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; border-radius: 8px; overflow: hidden; border: 1px solid #f0d5da; }
+        .table-laporan th, .table-laporan td { padding: 14px; text-align: left; font-size: 14px; border-bottom: 1px solid #f0d5da; }
+        .table-laporan th { background-color: var(--sidebar-hover); color: var(--primary-dark); font-weight: 600; }
+        .table-laporan tr:last-child td { border-bottom: none; }
+        .table-laporan tr:hover { background-color: #fff5f6; }
+        .badge-skor { padding: 6px 12px; border-radius: 20px; font-weight: 700; color: white; font-size: 13px; display: inline-block; min-width: 50px; text-align: center; }
+        .skor-tinggi { background-color: #27ae60; } /* Hijau */
+        .skor-sedang { background-color: #f39c12; } /* Kuning */
+        .skor-rendah { background-color: #e74c3c; } /* Merah */
     </style>
 </head>
 <body>
@@ -69,15 +84,18 @@
     <nav class="sidebar">
         <div class="sidebar-profile" onclick="bukaDashboard()">
             <h2>Nurfauzia Hidayat</h2>
-            <p>Uji Kompetensi Administrasi Bisnis</p>
+            <p style="margin: 5px 0 0 0; font-size: 13px;">Portal Evaluasi Akademik</p>
         </div>
         <div class="sidebar-scroll">
-            <button class="dropdown-btn" onclick="toggleDropdown('drop-materi')"><span>📚 Materi Kuliah</span> <span>▼</span></button>
+            <button class="dropdown-btn" onclick="toggleDropdown('drop-materi')"><span><i class="fa-solid fa-book" style="width:20px;"></i> Materi Kuliah</span> <span>▼</span></button>
             <ul id="drop-materi" class="dropdown-container"></ul>
-            <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')"><span>📝 Kuis Mata Kuliah</span> <span>▼</span></button>
+            
+            <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')"><span><i class="fa-solid fa-pen-to-square" style="width:20px;"></i> Kuis Evaluasi</span> <span>▼</span></button>
             <ul id="drop-kuis" class="dropdown-container"></ul>
+
+            <button class="dropdown-btn" onclick="bukaLaporan()"><span><i class="fa-solid fa-chart-bar" style="width:20px;"></i> Laporan Nilai</span></button>
         </div>
-        <div class="sidebar-footer">© 2026 - Nurfauzia Hidayat</div>
+        <div class="sidebar-footer">© 2026 - Academic Portal</div>
     </nav>
 
     <div class="main-wrapper">
@@ -91,8 +109,9 @@
                 <p><b>Cara Penggunaan:</b></p>
                 <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.6;">
                     <li>Pilih menu <b>Materi Kuliah</b> di bilah sisi kiri untuk membaca dan mempelajari bahan ajar secara komprehensif.</li>
-                    <li>Setelah menguasai materi, pilih menu <b>Kuis Mata Kuliah</b> untuk mengukur tingkat pemahaman Anda.</li>
+                    <li>Setelah menguasai materi, pilih menu <b>Kuis Evaluasi</b> untuk mengukur tingkat pemahaman Anda.</li>
                     <li>Pastikan Anda mengisi data diri sebelum memulai kuis.</li>
+                    <li>Akses <b>Laporan Nilai</b> untuk melihat rekam jejak hasil evaluasi yang telah Anda kerjakan.</li>
                 </ul>
                 <p>Silakan gunakan navigasi di sebelah kiri untuk mulai belajar. Selamat belajar dan semoga sukses!</p>
             </div>
@@ -107,9 +126,9 @@
             <div id="kuis-tab" class="content-card">
                 <h1 id="kuis-judul">Pilih Kuis</h1>
                 
-                <!-- Form Identitas (Ditampilkan sebelum kuis) -->
+                <!-- Form Identitas -->
                 <div id="form-identitas">
-                    <p>Silakan isi data diri Anda sebelum memulai evaluasi. Data ini diperlukan untuk pencatatan nilai akhir Anda.</p>
+                    <p>Silakan isi data diri Anda sebelum memulai evaluasi. Data ini diperlukan untuk pencatatan nilai pada laporan.</p>
                     <div class="form-group">
                         <label>Nama Lengkap</label>
                         <input type="text" id="input-nama" class="form-input" placeholder="Masukkan Nama Lengkap" required>
@@ -122,24 +141,30 @@
                         <label>Kelas</label>
                         <input type="text" id="input-kelas" class="form-input" placeholder="Masukkan Kelas (Contoh: AB-4A)" required>
                     </div>
-                    <button class="btn-action" onclick="mulaiKuis()">Mulai Kuis Sekarang</button>
+                    <button class="btn-action" onclick="mulaiKuis()">Mulai Kuis Sekarang <i class="fa-solid fa-play"></i></button>
                 </div>
 
-                <!-- Area Kuis Berlangsung (Disembunyikan awalnya) -->
+                <!-- Area Kuis Berlangsung -->
                 <div id="area-kuis" style="display: none;">
-                    <div id="info-peserta" style="margin-bottom: 20px; padding: 10px; background: #fae1e6; border-radius: 6px; font-size: 14px;"></div>
+                    <div id="info-peserta" style="margin-bottom: 20px; padding: 12px 15px; background: #fae1e6; border-radius: 6px; font-size: 14px; border-left: 4px solid var(--primary-dark);"></div>
                     <div id="kuis-isi"></div>
                     <div class="quiz-navigation">
                         <button class="btn-action btn-next" id="btn-next" onclick="nextQuestion()">Selanjutnya <i class="fa-solid fa-arrow-right"></i></button>
                     </div>
                 </div>
-
             </div>
+
+            <!-- Tab Laporan -->
+            <div id="laporan-tab" class="content-card">
+                <h1>Laporan Hasil Evaluasi</h1>
+                <div id="laporan-isi"></div>
+            </div>
+
         </main>
     </div>
 
     <script>
-        // Database Materi & Soal (Diperluas)
+        // Database Materi & Soal (Lengkap 6 Mata Kuliah)
         const database = {
             pancasila: { 
                 nama: "Pancasila", 
@@ -179,14 +204,56 @@
                     { q: "Apa kata dasar dari kata kerja 'berlari'?", a: ["Lari", "Ber", "Larian", "Berla"], k: 0 },
                     { q: "Apa kepanjangan dari KBBI?", a: ["Kamus Besar Bahasa Indonesia", "Kumpulan Buku Bahasa Indonesia", "Karya Besar Bangsa Indonesia", "Komunitas Bahasa Baku Indonesia"], k: 0 }
                 ]
+            },
+            b_inggris: { 
+                nama: "Bahasa Inggris", 
+                materi: `Mata kuliah Bahasa Inggris, khususnya Business Correspondence, membekali mahasiswa dengan kemampuan berkomunikasi secara profesional dalam skala internasional. Di era globalisasi, bahasa Inggris menjadi bahasa pengantar utama dalam dunia bisnis.<br><br>
+                Topik yang dibahas meliputi penulisan email profesional, surat lamaran kerja (cover letter), curriculum vitae, laporan bisnis, serta simulasi rapat dan negosiasi. Kemampuan ini akan meningkatkan nilai jual lulusan di mata perusahaan multinasional.<br><br>
+                Selain tata bahasa (grammar) dan kosakata (vocabulary) bisnis, mata kuliah ini juga menekankan pada pemahaman budaya kerja internasional (cross-cultural understanding).`,
+                soal: [
+                    { q: "What is the English word for 'Makan'?", a: ["Eat", "Drink", "Sleep", "Run"], k: 0 },
+                    { q: "Fill in the blank: I ... a student.", a: ["Am", "Is", "Are", "Be"], k: 0 },
+                    { q: "What is the opposite of 'Big'?", a: ["Small", "Short", "Thin", "Fat"], k: 0 },
+                    { q: "What is the color of the clear sky during the day?", a: ["Blue", "Red", "Green", "Yellow"], k: 0 },
+                    { q: "If someone asks 'How are you?', what is a common response?", a: ["I'm fine", "Yes", "No", "Thanks"], k: 0 }
+                ]
+            },
+            agama: { 
+                nama: "Pendidikan Agama", 
+                materi: `Pendidikan Agama berfokus pada pembentukan karakter, moral, dan etika mahasiswa berdasarkan nilai-nilai ketuhanan. Mata kuliah ini menjadi landasan penting dalam mengarahkan perilaku individu baik di dalam kehidupan bermasyarakat maupun di lingkungan kerja nantinya.<br><br>
+                Materi yang dipelajari mencakup konsep ketuhanan, kitab suci, kewajiban beribadah, toleransi antarumat beragama, dan pentingnya menjauhi perbuatan yang merugikan orang lain. <br><br>
+                Dengan pemahaman agama yang baik, diharapkan mahasiswa mampu mengintegrasikan integritas, kejujuran, dan empati dalam mengambil setiap keputusan profesional di masa depan.`,
+                soal: [
+                    { q: "Apakah nama kitab suci umat Islam?", a: ["Al-Qur'an", "Injil", "Taurat", "Wedha"], k: 0 },
+                    { q: "Manakah di bawah ini yang termasuk sifat wajib bagi Tuhan?", a: ["Wujud", "Mati", "Lapar", "Haus"], k: 0 },
+                    { q: "Apa tujuan utama manusia diciptakan menurut ajaran agama secara umum?", a: ["Beribadah kepada Tuhan", "Bermain-main", "Hanya untuk bekerja", "Tidur"], k: 0 },
+                    { q: "Perbuatan baik yang mendatangkan pahala disebut juga dengan?", a: ["Amal saleh", "Dosa", "Keburukan", "Kejahatan"], k: 0 },
+                    { q: "Segala sesuatu yang ada di alam semesta ini adalah?", a: ["Ciptaan Tuhan", "Buatan Robot", "Hanya Imajinasi", "Mimpi semata"], k: 0 }
+                ]
+            },
+            info: { 
+                nama: "Informatika", 
+                materi: `Informatika dan Sistem Informasi mempelajari bagaimana teknologi digunakan untuk mengumpulkan, mengelola, dan mendistribusikan data dalam suatu organisasi. Penguasaan teknologi informasi kini menjadi syarat mutlak dalam administrasi bisnis modern.<br><br>
+                Mahasiswa diperkenalkan pada konsep dasar perangkat keras (hardware), perangkat lunak (software), jaringan komputer, dan keamanan siber. Selain itu, mahasiswa juga dilatih menggunakan aplikasi perkantoran (office suites) yang sangat berguna untuk pelaporan dan analisis data.<br><br>
+                Pemahaman informatika membantu mempercepat proses kerja, mengurangi kesalahan manusia (human error), dan mendukung sistem pengambilan keputusan berbasis digital.`,
+                soal: [
+                    { q: "Apa kepanjangan dari CPU?", a: ["Central Processing Unit", "Core Power Unit", "Compute Processing Unit", "Control Power Unit"], k: 0 },
+                    { q: "Perangkat keras apa yang digunakan sebagai alat penunjuk utama di PC?", a: ["Mouse", "Keyboard", "Printer", "Monitor"], k: 0 },
+                    { q: "RAM pada komputer berfungsi sebagai apa?", a: ["Penyimpanan memori sementara", "Penyimpanan data permanen", "Pemroses grafis", "Layar tampilan"], k: 0 },
+                    { q: "Perangkat lunak yang digunakan untuk berselancar di internet disebut?", a: ["Browser (seperti Chrome)", "Excel", "Word", "Paint"], k: 0 },
+                    { q: "Komponen yang sering disebut sebagai 'otak' dari sebuah komputer adalah?", a: ["Processor", "Harddisk", "Casing", "Kabel daya"], k: 0 }
+                ]
             }
         };
 
-        // State Kuis
+        // State Kuis & Penyimpanan Lokal Laporan
         let currentSubject = "";
         let currentQuestionIndex = 0;
         let userAnswers = [];
         let userData = {};
+        
+        // Mengambil riwayat laporan dari LocalStorage agar tidak hilang saat direfresh
+        let riwayatLaporan = JSON.parse(localStorage.getItem('riwayatAkademik')) || [];
 
         // Inisialisasi Menu Sidebar
         function init() {
@@ -203,16 +270,18 @@
             el.style.display = el.style.display === 'block' ? 'none' : 'block'; 
         }
 
+        // Menyembunyikan semua tab sebelum membuka tab baru
         function resetTabs() {
             document.getElementById('dashboard-tab').classList.remove('active');
             document.getElementById('materi-tab').classList.remove('active');
             document.getElementById('kuis-tab').classList.remove('active');
+            document.getElementById('laporan-tab').classList.remove('active');
         }
 
         function bukaDashboard() {
             resetTabs();
             document.getElementById('dashboard-tab').classList.add('active');
-            document.getElementById('header-title').innerText = "Dashboard Utama";
+            document.getElementById('header-title').innerHTML = '<i class="fa-solid fa-house"></i> Dashboard Utama';
         }
 
         function bukaMateri(key) {
@@ -220,32 +289,32 @@
             document.getElementById('materi-tab').classList.add('active');
             document.getElementById('materi-judul').innerText = database[key].nama;
             document.getElementById('materi-isi').innerHTML = `<p>${database[key].materi}</p>`;
-            document.getElementById('header-title').innerText = "Materi: " + database[key].nama;
+            document.getElementById('header-title').innerHTML = `<i class="fa-solid fa-book-open"></i> Materi: ${database[key].nama}`;
         }
 
         function bukaKuis(key) {
             resetTabs();
             document.getElementById('kuis-tab').classList.add('active');
             document.getElementById('kuis-judul').innerText = "Kuis: " + database[key].nama;
-            document.getElementById('header-title').innerText = "Evaluasi: " + database[key].nama;
+            document.getElementById('header-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Evaluasi: ${database[key].nama}`;
             
             // Setel ulang UI kuis
             document.getElementById('form-identitas').style.display = 'block';
             document.getElementById('area-kuis').style.display = 'none';
             
-            // Reset input form
-            document.getElementById('input-nama').value = "";
-            document.getElementById('input-nim').value = "";
-            document.getElementById('input-kelas').value = "";
+            // Opsional: jika ingin form langsung terisi otomatis dari data sebelumnya, buka komentar di bawah
+            // if(userData.nama) document.getElementById('input-nama').value = userData.nama;
+            // if(userData.nim) document.getElementById('input-nim').value = userData.nim;
+            // if(userData.kelas) document.getElementById('input-kelas').value = userData.kelas;
 
             currentSubject = key;
         }
 
         function mulaiKuis() {
             // Ambil data dari form
-            const nama = document.getElementById('input-nama').value;
-            const nim = document.getElementById('input-nim').value;
-            const kelas = document.getElementById('input-kelas').value;
+            const nama = document.getElementById('input-nama').value.trim();
+            const nim = document.getElementById('input-nim').value.trim();
+            const kelas = document.getElementById('input-kelas').value.trim();
 
             if(nama === "" || nim === "" || kelas === "") {
                 alert("Harap lengkapi Nama, NIM, dan Kelas terlebih dahulu!");
@@ -261,7 +330,7 @@
             // Sembunyikan form, tampilkan area kuis
             document.getElementById('form-identitas').style.display = 'none';
             document.getElementById('area-kuis').style.display = 'block';
-            document.getElementById('btn-next').style.display = 'inline-block';
+            document.getElementById('btn-next').style.display = 'inline-flex';
             
             // Tampilkan info peserta
             document.getElementById('info-peserta').innerHTML = `<b>Peserta:</b> ${nama} | <b>NIM:</b> ${nim} | <b>Kelas:</b> ${kelas}`;
@@ -275,12 +344,11 @@
             
             let html = `
                 <div class="question-box">
-                    <p style="color:var(--text-muted); font-size:13px; margin-bottom:10px;">Soal ${currentQuestionIndex + 1} dari ${totalSoal}</p>
+                    <p style="color:var(--text-muted); font-size:13px; margin-bottom:10px; font-weight:600;">Soal ${currentQuestionIndex + 1} dari ${totalSoal}</p>
                     <p class="question-text">${soalData.q}</p>
             `;
 
             soalData.a.forEach((opt, idx) => {
-                // Beri kelas 'selected' jika jawaban ini sebelumnya sudah dipilih
                 const isSelected = userAnswers[currentQuestionIndex] === idx ? "selected" : "";
                 html += `<button class="option-btn ${isSelected}" onclick="pilihJawaban(${idx})">${String.fromCharCode(65 + idx)}. ${opt}</button>`;
             });
@@ -288,10 +356,9 @@
             html += `</div>`;
             document.getElementById('kuis-isi').innerHTML = html;
 
-            // Ganti teks tombol jika soal terakhir
             const btnNext = document.getElementById('btn-next');
             if (currentQuestionIndex === totalSoal - 1) {
-                btnNext.innerHTML = 'Selesaikan Kuis <i class="fa-solid fa-check"></i>';
+                btnNext.innerHTML = 'Selesaikan & Lihat Hasil <i class="fa-solid fa-check"></i>';
             } else {
                 btnNext.innerHTML = 'Selanjutnya <i class="fa-solid fa-arrow-right"></i>';
             }
@@ -299,12 +366,12 @@
 
         function pilihJawaban(index) {
             userAnswers[currentQuestionIndex] = index;
-            renderQuestion(); // Render ulang untuk menampilkan efek aktif/terpilih
+            renderQuestion(); 
         }
 
         function nextQuestion() {
             if (userAnswers[currentQuestionIndex] === null) {
-                alert("Silakan pilih jawaban terlebih dahulu sebelum melanjutkan!");
+                alert("Silakan pilih salah satu jawaban terlebih dahulu!");
                 return;
             }
 
@@ -332,13 +399,30 @@
             }
 
             const skor = Math.round((benar / soalData.length) * 100);
+            
+            // Simpan ke riwayat laporan
+            const tanggalLengkap = new Date().toLocaleString('id-ID', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+            
+            riwayatLaporan.push({
+                tanggal: tanggalLengkap,
+                nama: userData.nama,
+                nim: userData.nim,
+                kelas: userData.kelas,
+                matkul: database[currentSubject].nama,
+                skor: skor,
+                benar: benar,
+                salah: salah
+            });
+            
+            // Simpan ke LocalStorage
+            localStorage.setItem('riwayatAkademik', JSON.stringify(riwayatLaporan));
 
-            document.getElementById('btn-next').style.display = 'none'; // Sembunyikan tombol next
+            document.getElementById('btn-next').style.display = 'none';
 
             let html = `
                 <div class="result-box">
-                    <h2>Hasil Kuis ${database[currentSubject].nama}</h2>
-                    <p style="margin-bottom:20px;">Telah diselesaikan oleh: <b>${userData.nama}</b> (${userData.nim})</p>
+                    <h2>Evaluasi Selesai!</h2>
+                    <p style="margin-bottom:20px; color: var(--text-muted);">Mata Kuliah: <b>${database[currentSubject].nama}</b></p>
                     
                     <div class="score-circle">${skor}</div>
                     
@@ -346,11 +430,83 @@
                     <p class="result-detail" style="color: #27ae60;">Jawaban Benar: <b>${benar}</b></p>
                     <p class="result-detail" style="color: #c0392b;">Jawaban Salah: <b>${salah}</b></p>
                     
-                    <button class="btn-action" style="margin-top:20px; width:auto;" onclick="bukaDashboard()">Kembali ke Dashboard</button>
+                    <div style="margin-top:25px; display:flex; justify-content:center; gap:10px;">
+                        <button class="btn-action" style="width:auto; background:white; color:var(--primary-dark); border:1px solid var(--primary-dark);" onclick="bukaDashboard()">Ke Dashboard</button>
+                        <button class="btn-action" style="width:auto;" onclick="bukaLaporan()">Lihat Laporan</button>
+                    </div>
                 </div>
             `;
 
             document.getElementById('kuis-isi').innerHTML = html;
+        }
+
+        // Fitur Tab Laporan
+        function bukaLaporan() {
+            resetTabs();
+            document.getElementById('laporan-tab').classList.add('active');
+            document.getElementById('header-title').innerHTML = '<i class="fa-solid fa-chart-bar"></i> Laporan Nilai Evaluasi';
+            
+            let html = `<p>Berikut adalah riwayat evaluasi kuis yang telah tersimpan di sistem:</p>`;
+            
+            if (riwayatLaporan.length === 0) {
+                html += `
+                    <div class="question-box" style="text-align:center; padding: 40px 20px;">
+                        <i class="fa-solid fa-folder-open" style="font-size: 40px; color: #f0d5da; margin-bottom: 15px;"></i>
+                        <p style="color: var(--text-muted);">Belum ada riwayat kuis yang dikerjakan.</p>
+                        <button class="btn-action" style="width:auto; margin-top:10px;" onclick="bukaDashboard()">Mulai Belajar</button>
+                    </div>`;
+            } else {
+                html += `
+                    <div style="overflow-x:auto;">
+                        <table class="table-laporan">
+                            <thead>
+                                <tr>
+                                    <th>Waktu</th>
+                                    <th>Identitas Mahasiswa</th>
+                                    <th>Mata Kuliah</th>
+                                    <th style="text-align:center;">Benar / Salah</th>
+                                    <th style="text-align:center;">Skor Akhir</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                
+                // Urutkan dari yang terbaru (reverse)
+                [...riwayatLaporan].reverse().forEach(item => {
+                    let badgeClass = item.skor >= 80 ? 'skor-tinggi' : (item.skor >= 60 ? 'skor-sedang' : 'skor-rendah');
+                    html += `
+                        <tr>
+                            <td style="font-size: 13px; color: var(--text-muted);">${item.tanggal}</td>
+                            <td><b>${item.nama}</b><br><span style="font-size: 12px; color: var(--text-muted);">${item.nim} - ${item.kelas}</span></td>
+                            <td style="font-weight: 500;">${item.matkul}</td>
+                            <td style="text-align:center;">
+                                <span style="color:#27ae60; font-weight:bold;">${item.benar}</span> / 
+                                <span style="color:#c0392b; font-weight:bold;">${item.salah}</span>
+                            </td>
+                            <td style="text-align:center;"><span class="badge-skor ${badgeClass}">${item.skor}</span></td>
+                        </tr>
+                    `;
+                });
+                
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="text-align:right; margin-top: 20px;">
+                        <button class="btn-action" style="width:auto; background:white; color:#e74c3c; border:1px solid #e74c3c;" onclick="hapusLaporan()">
+                            <i class="fa-solid fa-trash"></i> Bersihkan Riwayat
+                        </button>
+                    </div>`;
+            }
+            
+            document.getElementById('laporan-isi').innerHTML = html;
+        }
+
+        function hapusLaporan() {
+            if(confirm("Peringatan: Apakah Anda yakin ingin menghapus seluruh riwayat nilai dari sistem ini? Data yang dihapus tidak dapat dikembalikan.")) {
+                riwayatLaporan = [];
+                localStorage.removeItem('riwayatAkademik');
+                bukaLaporan(); // Render ulang tampilan kosong
+            }
         }
 
         // Jalankan saat load pertama kali
