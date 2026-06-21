@@ -17,28 +17,57 @@
             --bg-main: #fff5f6; --text-main: #2e1f22; --text-muted: #8c7377;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { display: flex; height: 100vh; background-color: var(--bg-main); overflow: hidden; }
+        body { display: flex; height: 100vh; background-color: var(--bg-main); overflow: hidden; color: var(--text-main); }
+        
+        /* Sidebar */
         .sidebar { width: 320px; background-color: var(--sidebar-bg); color: var(--sidebar-text); display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(76, 46, 53, 0.05); }
-        .sidebar-profile { padding: 25px 20px; text-align: center; background-color: var(--sidebar-hover); }
+        .sidebar-profile { padding: 25px 20px; text-align: center; background-color: var(--sidebar-hover); cursor: pointer; }
         .sidebar-scroll { overflow-y: auto; flex-grow: 1; padding: 15px 0; }
         .dropdown-btn { width: 100%; padding: 12px 20px; background: none; border: none; text-align: left; font-weight: 600; cursor: pointer; color: var(--sidebar-text); display: flex; justify-content: space-between; }
         .dropdown-container { display: none; background-color: rgba(255, 255, 255, 0.4); list-style: none; padding: 5px 0; }
         .dropdown-item { padding: 9px 20px 9px 35px; font-size: 13px; cursor: pointer; transition: 0.2s; }
         .dropdown-item:hover { background-color: var(--accent-pink); }
-        .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
-        .top-header { background: #fff; padding: 20px 30px; border-bottom: 1px solid #f0d5da; font-weight: 600; color: var(--primary-dark); }
-        .main-content { padding: 30px; overflow-y: auto; }
-        .content-card { background: white; padding: 40px; border-radius: 12px; display: none; border-top: 5px solid var(--accent-pink); }
-        .content-card.active { display: block; }
-        .btn-action { padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: 600; }
-        .question-box { background: #fffbfb; padding: 20px; border: 1px solid #f0d5da; border-radius: 8px; margin-bottom: 15px; }
         .sidebar-footer { padding: 15px; background-color: var(--sidebar-hover); text-align: center; font-size: 10.5px; color: var(--primary-dark); font-weight: 500; }
+        
+        /* Main Layout */
+        .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden;}
+        .top-header { background: #fff; padding: 20px 30px; border-bottom: 1px solid #f0d5da; font-weight: 600; color: var(--primary-dark); font-size: 18px;}
+        .main-content { padding: 30px; overflow-y: auto; flex-grow: 1; }
+        .content-card { background: white; padding: 40px; border-radius: 12px; display: none; border-top: 5px solid var(--accent-pink); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .content-card.active { display: block; }
+        
+        /* Typography & Elements */
+        h1 { margin-bottom: 15px; color: var(--primary-dark); }
+        p { line-height: 1.6; margin-bottom: 15px; text-align: justify; }
+        
+        /* Buttons & Forms */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 14px; }
+        .form-input { width: 100%; padding: 12px; border: 1px solid #f0d5da; border-radius: 6px; font-family: 'Inter'; outline: none; }
+        .form-input:focus { border-color: var(--active-highlight); }
+        
+        .btn-action { padding: 12px 20px; background: var(--primary-dark); color: white; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-weight: 600; transition: 0.2s; }
+        .btn-action:hover { background: var(--active-highlight); }
+        
+        /* Quiz Specific */
+        .question-box { background: #fffbfb; padding: 25px; border: 1px solid #f0d5da; border-radius: 8px; margin-bottom: 15px; }
+        .question-text { font-size: 16px; margin-bottom: 20px; font-weight: 600; }
+        .option-btn { display: block; width: 100%; padding: 12px; margin-bottom: 10px; background: white; color: var(--primary-dark); border: 2px solid var(--sidebar-hover); border-radius: 6px; cursor: pointer; text-align: left; font-weight: 500; transition: 0.2s; }
+        .option-btn:hover { background: var(--sidebar-hover); }
+        .option-btn.selected { background: var(--active-highlight); color: white; border-color: var(--active-highlight); }
+        
+        .quiz-navigation { display: flex; justify-content: flex-end; margin-top: 20px; }
+        .btn-next { width: auto; background: var(--active-highlight); }
+        
+        .result-box { text-align: center; padding: 30px; background: #fffbfb; border: 1px solid #f0d5da; border-radius: 8px; }
+        .score-circle { width: 120px; height: 120px; background: var(--primary-dark); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: bold; margin: 0 auto 20px auto; }
+        .result-detail { font-size: 16px; margin: 5px 0; }
     </style>
 </head>
 <body>
 
     <nav class="sidebar">
-        <div class="sidebar-profile">
+        <div class="sidebar-profile" onclick="bukaDashboard()">
             <h2>Nurfauzia Hidayat</h2>
             <p>Uji Kompetensi Administrasi Bisnis</p>
         </div>
@@ -54,83 +83,112 @@
     <div class="main-wrapper">
         <header class="top-header" id="header-title">Dashboard Utama</header>
         <main class="main-content">
+            
+            <!-- Tab Dashboard -->
+            <div id="dashboard-tab" class="content-card active">
+                <h1>Selamat Datang di Portal Academic</h1>
+                <p>Halo, selamat datang di portal pembelajaran terpadu. Portal ini dirancang untuk memudahkan Anda dalam mengakses materi perkuliahan secara terstruktur dan menguji pemahaman Anda melalui kuis yang interaktif.</p>
+                <p><b>Cara Penggunaan:</b></p>
+                <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.6;">
+                    <li>Pilih menu <b>Materi Kuliah</b> di bilah sisi kiri untuk membaca dan mempelajari bahan ajar secara komprehensif.</li>
+                    <li>Setelah menguasai materi, pilih menu <b>Kuis Mata Kuliah</b> untuk mengukur tingkat pemahaman Anda.</li>
+                    <li>Pastikan Anda mengisi data diri sebelum memulai kuis.</li>
+                </ul>
+                <p>Silakan gunakan navigasi di sebelah kiri untuk mulai belajar. Selamat belajar dan semoga sukses!</p>
+            </div>
+
+            <!-- Tab Materi -->
             <div id="materi-tab" class="content-card">
                 <h1 id="materi-judul">Pilih Materi</h1>
                 <div id="materi-isi"></div>
             </div>
+
+            <!-- Tab Kuis -->
             <div id="kuis-tab" class="content-card">
                 <h1 id="kuis-judul">Pilih Kuis</h1>
-                <div id="kuis-isi"></div>
+                
+                <!-- Form Identitas (Ditampilkan sebelum kuis) -->
+                <div id="form-identitas">
+                    <p>Silakan isi data diri Anda sebelum memulai evaluasi. Data ini diperlukan untuk pencatatan nilai akhir Anda.</p>
+                    <div class="form-group">
+                        <label>Nama Lengkap</label>
+                        <input type="text" id="input-nama" class="form-input" placeholder="Masukkan Nama Lengkap" required>
+                    </div>
+                    <div class="form-group">
+                        <label>NIM</label>
+                        <input type="text" id="input-nim" class="form-input" placeholder="Masukkan NIM" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Kelas</label>
+                        <input type="text" id="input-kelas" class="form-input" placeholder="Masukkan Kelas (Contoh: AB-4A)" required>
+                    </div>
+                    <button class="btn-action" onclick="mulaiKuis()">Mulai Kuis Sekarang</button>
+                </div>
+
+                <!-- Area Kuis Berlangsung (Disembunyikan awalnya) -->
+                <div id="area-kuis" style="display: none;">
+                    <div id="info-peserta" style="margin-bottom: 20px; padding: 10px; background: #fae1e6; border-radius: 6px; font-size: 14px;"></div>
+                    <div id="kuis-isi"></div>
+                    <div class="quiz-navigation">
+                        <button class="btn-action btn-next" id="btn-next" onclick="nextQuestion()">Selanjutnya <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
 
     <script>
+        // Database Materi & Soal (Diperluas)
         const database = {
             pancasila: { 
-                nama: "Pancasila", materi: "Pancasila adalah dasar negara yang mengatur kehidupan berbangsa.",
+                nama: "Pancasila", 
+                materi: `Pancasila adalah pilar ideologis negara Indonesia. Nama ini terdiri dari dua kata dari Sanskerta: "pañca" berarti lima dan "śīla" berarti prinsip atau asas. Pancasila merupakan rumusan dan pedoman kehidupan berbangsa dan bernegara bagi seluruh rakyat Indonesia.<br><br>
+                Lima sendi utama penyusun Pancasila adalah: Ketuhanan Yang Maha Esa, kemanusiaan yang adil dan beradab, persatuan Indonesia, kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan, dan keadilan sosial bagi seluruh rakyat Indonesia.<br><br>
+                Pentingnya Pancasila dalam pendidikan adalah untuk mencetak generasi yang tidak hanya cerdas secara akademis, tetapi juga memiliki moral dan etika yang baik sesuai dengan nilai-nilai luhur bangsa.`,
                 soal: [
-                    { q: "Sila ke-3 berbunyi?", a: ["Persatuan Indonesia", "Kemanusiaan", "Ketuhanan", "Keadilan"], k: 0 },
-                    { q: "Lambang sila ke-1?", a: ["Bintang", "Rantai", "Pohon Beringin", "Padi"], k: 0 },
-                    { q: "Tahun lahir Pancasila?", a: ["1945", "1946", "1947", "1948"], k: 0 },
-                    { q: "Pengusul nama Pancasila?", a: ["Soekarno", "Hatta", "Yamin", "Supomo"], k: 0 },
-                    { q: "Sila ke-5 dilambangkan?", a: ["Padi & Kapas", "Bintang", "Rantai", "Banteng"], k: 0 }
+                    { q: "Sila ke-3 berbunyi?", a: ["Persatuan Indonesia", "Kemanusiaan yang adil dan beradab", "Ketuhanan Yang Maha Esa", "Keadilan sosial"], k: 0 },
+                    { q: "Lambang sila ke-1 adalah?", a: ["Bintang", "Rantai", "Pohon Beringin", "Padi dan Kapas"], k: 0 },
+                    { q: "Tahun lahirnya Pancasila?", a: ["1945", "1946", "1947", "1948"], k: 0 },
+                    { q: "Siapakah tokoh yang pertama kali mengusulkan nama Pancasila?", a: ["Soekarno", "Mohammad Hatta", "Mohammad Yamin", "Soepomo"], k: 0 },
+                    { q: "Sila ke-5 dilambangkan dengan?", a: ["Padi & Kapas", "Bintang", "Rantai", "Kepala Banteng"], k: 0 }
                 ]
             },
             matematika: { 
-                nama: "Matematika", materi: "Matematika Ekonomi: Mempelajari fungsi, limit, dan turunan.",
+                nama: "Matematika Bisnis", 
+                materi: `Matematika Bisnis adalah penerapan prinsip-prinsip matematika dalam kegiatan operasional bisnis dan manajemen. Ilmu ini sangat esensial bagi administrator dan manajer untuk membuat keputusan berbasis data, menghitung laba rugi, memprediksi tren, serta mengelola keuangan perusahaan dengan efisien.<br><br>
+                Materi yang sering dipelajari mencakup bunga tunggal dan bunga majemuk, penyusutan aset, analisis pulang pokok (Break Even Point), serta matriks untuk optimasi alokasi sumber daya. Pemahaman yang kuat pada bidang ini meminimalisir risiko kerugian perusahaan.<br><br>
+                Dengan menguasai matematika bisnis, Anda akan mampu menganalisis permasalahan ekonomi secara kuantitatif yang akan mendukung pembuatan laporan perusahaan yang akurat.`,
                 soal: [
-                    { q: "Hasil dari 5x5?", a: ["25", "20", "30", "15"], k: 0 },
-                    { q: "Akar 9?", a: ["3", "2", "4", "5"], k: 0 },
-                    { q: "Sisi segitiga?", a: ["3", "4", "2", "5"], k: 0 },
-                    { q: "Hasil 10/2?", a: ["5", "2", "4", "6"], k: 0 },
-                    { q: "Sudut siku-siku?", a: ["90", "45", "180", "360"], k: 0 }
+                    { q: "Berapa hasil dari 5 x 5?", a: ["25", "20", "30", "15"], k: 0 },
+                    { q: "Berapakah akar kuadrat dari 9?", a: ["3", "2", "4", "5"], k: 0 },
+                    { q: "Berapa jumlah sisi pada bangun datar segitiga?", a: ["3", "4", "2", "5"], k: 0 },
+                    { q: "Hasil pembagian dari 10 / 2 adalah?", a: ["5", "2", "4", "6"], k: 0 },
+                    { q: "Berapa derajat sudut siku-siku?", a: ["90 Derajat", "45 Derajat", "180 Derajat", "360 Derajat"], k: 0 }
                 ]
             },
             b_indo: { 
-                nama: "Bahasa Indonesia", materi: "Teknik Penulisan Karya Ilmiah yang baik.",
+                nama: "Bahasa Indonesia", 
+                materi: `Mata kuliah Bahasa Indonesia di tingkat perguruan tinggi difokuskan pada penggunaan bahasa secara baik dan benar untuk keperluan akademik dan profesional. Hal ini mencakup tata bahasa baku, ejaan yang disempurnakan, hingga teknik penulisan karya ilmiah seperti makalah, jurnal, dan skripsi.<br><br>
+                Penulisan yang baik membutuhkan kemampuan menyusun kalimat yang efektif, paragraf yang kohesif, serta alur berpikir yang logis. Selain itu, mahasiswa diajarkan etika pengutipan untuk menghindari plagiarisme.<br><br>
+                Penguasaan Bahasa Indonesia yang baik juga meningkatkan kemampuan komunikasi bisnis, penulisan surat resmi, serta presentasi profesional di dunia kerja nanti.`,
                 soal: [
-                    { q: "Ibu kota Indonesia?", a: ["Jakarta", "Bandung", "Surabaya", "Medan"], k: 0 },
-                    { q: "Antonim besar?", a: ["Kecil", "Panjang", "Lebar", "Tinggi"], k: 0 },
-                    { q: "Tanda baca akhir kalimat?", a: ["Titik", "Koma", "Seru", "Tanya"], k: 0 },
-                    { q: "Kata dasar 'berlari'?", a: ["Lari", "Ber", "Larian", "Berla"], k: 0 },
-                    { q: "Apa itu KBBI?", a: ["Kamus", "Buku", "Jurnal", "Majalah"], k: 0 }
-                ]
-            },
-            b_inggris: { 
-                nama: "Bahasa Inggris", materi: "Business Correspondence.",
-                soal: [
-                    { q: "English of 'Makan'?", a: ["Eat", "Drink", "Sleep", "Run"], k: 0 },
-                    { q: "I ... a student.", a: ["Am", "Is", "Are", "Be"], k: 0 },
-                    { q: "Opposite of 'Big'?", a: ["Small", "Short", "Thin", "Fat"], k: 0 },
-                    { q: "Color of the sky?", a: ["Blue", "Red", "Green", "Yellow"], k: 0 },
-                    { q: "How are you?", a: ["I'm fine", "Yes", "No", "Thanks"], k: 0 }
-                ]
-            },
-            agama: { 
-                nama: "Pendidikan Agama", materi: "Etika dan Moral.",
-                soal: [
-                    { q: "Kitab suci umat Islam?", a: ["Al-Qur'an", "Injil", "Taurat", "Wedha"], k: 0 },
-                    { q: "Sifat wajib Tuhan?", a: ["Wujud", "Mati", "Lapar", "Haus"], k: 0 },
-                    { q: "Tujuan ibadah?", a: ["Ibadah", "Main", "Bekerja", "Tidur"], k: 0 },
-                    { q: "Berbuat baik disebut?", a: ["Amal", "Dosa", "Buruk", "Jahat"], k: 0 },
-                    { q: "Ciptaan Tuhan?", a: ["Alam", "Robot", "Imajinasi", "Mimpi"], k: 0 }
-                ]
-            },
-            info: { 
-                nama: "Informatika", materi: "Sistem Informasi.",
-                soal: [
-                    { q: "CPU singkatan dari?", a: ["Central Processing Unit", "Core Power", "Compute Unit", "Control Unit"], k: 0 },
-                    { q: "Alat penunjuk di PC?", a: ["Mouse", "Keyboard", "Printer", "Monitor"], k: 0 },
-                    { q: "Apa itu RAM?", a: ["Memory", "Storage", "Processor", "Monitor"], k: 0 },
-                    { q: "Website untuk browsing?", a: ["Chrome", "Excel", "Word", "Paint"], k: 0 },
-                    { q: "Otak komputer?", a: ["Processor", "Harddisk", "Casing", "Kabel"], k: 0 }
+                    { q: "Manakah yang merupakan ibu kota negara Indonesia saat ini?", a: ["Jakarta", "Bandung", "Surabaya", "Medan"], k: 0 },
+                    { q: "Apakah antonim dari kata 'Besar'?", a: ["Kecil", "Panjang", "Lebar", "Tinggi"], k: 0 },
+                    { q: "Tanda baca apa yang digunakan untuk mengakhiri sebuah kalimat pernyataan?", a: ["Titik (.)", "Koma (,)", "Tanda Seru (!)", "Tanda Tanya (?)"], k: 0 },
+                    { q: "Apa kata dasar dari kata kerja 'berlari'?", a: ["Lari", "Ber", "Larian", "Berla"], k: 0 },
+                    { q: "Apa kepanjangan dari KBBI?", a: ["Kamus Besar Bahasa Indonesia", "Kumpulan Buku Bahasa Indonesia", "Karya Besar Bangsa Indonesia", "Komunitas Bahasa Baku Indonesia"], k: 0 }
                 ]
             }
         };
 
-        function toggleDropdown(id) { document.getElementById(id).style.display = document.getElementById(id).style.display === 'block' ? 'none' : 'block'; }
+        // State Kuis
+        let currentSubject = "";
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let userData = {};
 
+        // Inisialisasi Menu Sidebar
         function init() {
             const mMenu = document.getElementById('drop-materi');
             const kMenu = document.getElementById('drop-kuis');
@@ -140,28 +198,162 @@
             }
         }
 
-        function bukaMateri(key) {
-            document.getElementById('materi-tab').classList.add('active');
+        function toggleDropdown(id) { 
+            let el = document.getElementById(id);
+            el.style.display = el.style.display === 'block' ? 'none' : 'block'; 
+        }
+
+        function resetTabs() {
+            document.getElementById('dashboard-tab').classList.remove('active');
+            document.getElementById('materi-tab').classList.remove('active');
             document.getElementById('kuis-tab').classList.remove('active');
+        }
+
+        function bukaDashboard() {
+            resetTabs();
+            document.getElementById('dashboard-tab').classList.add('active');
+            document.getElementById('header-title').innerText = "Dashboard Utama";
+        }
+
+        function bukaMateri(key) {
+            resetTabs();
+            document.getElementById('materi-tab').classList.add('active');
             document.getElementById('materi-judul').innerText = database[key].nama;
             document.getElementById('materi-isi').innerHTML = `<p>${database[key].materi}</p>`;
             document.getElementById('header-title').innerText = "Materi: " + database[key].nama;
         }
 
         function bukaKuis(key) {
-            document.getElementById('materi-tab').classList.remove('active');
+            resetTabs();
             document.getElementById('kuis-tab').classList.add('active');
-            document.getElementById('kuis-judul').innerText = "Kuis " + database[key].nama;
+            document.getElementById('kuis-judul').innerText = "Kuis: " + database[key].nama;
             document.getElementById('header-title').innerText = "Evaluasi: " + database[key].nama;
-            let html = "";
-            database[key].soal.forEach((s, idx) => {
-                html += `<div class="question-box"><p><b>${idx+1}. ${s.q}</b></p>` + 
-                        s.a.map((opt, i) => `<button class="btn-action" style="width:auto; margin-right:10px;" onclick="alert('${i === s.k ? 'Benar!' : 'Salah!'}')">${opt}</button>`).join('') + 
-                        `</div>`;
+            
+            // Setel ulang UI kuis
+            document.getElementById('form-identitas').style.display = 'block';
+            document.getElementById('area-kuis').style.display = 'none';
+            
+            // Reset input form
+            document.getElementById('input-nama').value = "";
+            document.getElementById('input-nim').value = "";
+            document.getElementById('input-kelas').value = "";
+
+            currentSubject = key;
+        }
+
+        function mulaiKuis() {
+            // Ambil data dari form
+            const nama = document.getElementById('input-nama').value;
+            const nim = document.getElementById('input-nim').value;
+            const kelas = document.getElementById('input-kelas').value;
+
+            if(nama === "" || nim === "" || kelas === "") {
+                alert("Harap lengkapi Nama, NIM, dan Kelas terlebih dahulu!");
+                return;
+            }
+
+            userData = { nama, nim, kelas };
+            
+            // Reset state kuis
+            currentQuestionIndex = 0;
+            userAnswers = new Array(database[currentSubject].soal.length).fill(null);
+
+            // Sembunyikan form, tampilkan area kuis
+            document.getElementById('form-identitas').style.display = 'none';
+            document.getElementById('area-kuis').style.display = 'block';
+            document.getElementById('btn-next').style.display = 'inline-block';
+            
+            // Tampilkan info peserta
+            document.getElementById('info-peserta').innerHTML = `<b>Peserta:</b> ${nama} | <b>NIM:</b> ${nim} | <b>Kelas:</b> ${kelas}`;
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const soalData = database[currentSubject].soal[currentQuestionIndex];
+            const totalSoal = database[currentSubject].soal.length;
+            
+            let html = `
+                <div class="question-box">
+                    <p style="color:var(--text-muted); font-size:13px; margin-bottom:10px;">Soal ${currentQuestionIndex + 1} dari ${totalSoal}</p>
+                    <p class="question-text">${soalData.q}</p>
+            `;
+
+            soalData.a.forEach((opt, idx) => {
+                // Beri kelas 'selected' jika jawaban ini sebelumnya sudah dipilih
+                const isSelected = userAnswers[currentQuestionIndex] === idx ? "selected" : "";
+                html += `<button class="option-btn ${isSelected}" onclick="pilihJawaban(${idx})">${String.fromCharCode(65 + idx)}. ${opt}</button>`;
             });
+
+            html += `</div>`;
+            document.getElementById('kuis-isi').innerHTML = html;
+
+            // Ganti teks tombol jika soal terakhir
+            const btnNext = document.getElementById('btn-next');
+            if (currentQuestionIndex === totalSoal - 1) {
+                btnNext.innerHTML = 'Selesaikan Kuis <i class="fa-solid fa-check"></i>';
+            } else {
+                btnNext.innerHTML = 'Selanjutnya <i class="fa-solid fa-arrow-right"></i>';
+            }
+        }
+
+        function pilihJawaban(index) {
+            userAnswers[currentQuestionIndex] = index;
+            renderQuestion(); // Render ulang untuk menampilkan efek aktif/terpilih
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert("Silakan pilih jawaban terlebih dahulu sebelum melanjutkan!");
+                return;
+            }
+
+            const totalSoal = database[currentSubject].soal.length;
+            
+            if (currentQuestionIndex < totalSoal - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                tampilkanHasil();
+            }
+        }
+
+        function tampilkanHasil() {
+            const soalData = database[currentSubject].soal;
+            let benar = 0;
+            let salah = 0;
+
+            for (let i = 0; i < soalData.length; i++) {
+                if (userAnswers[i] === soalData[i].k) {
+                    benar++;
+                } else {
+                    salah++;
+                }
+            }
+
+            const skor = Math.round((benar / soalData.length) * 100);
+
+            document.getElementById('btn-next').style.display = 'none'; // Sembunyikan tombol next
+
+            let html = `
+                <div class="result-box">
+                    <h2>Hasil Kuis ${database[currentSubject].nama}</h2>
+                    <p style="margin-bottom:20px;">Telah diselesaikan oleh: <b>${userData.nama}</b> (${userData.nim})</p>
+                    
+                    <div class="score-circle">${skor}</div>
+                    
+                    <p class="result-detail">Total Soal: <b>${soalData.length}</b></p>
+                    <p class="result-detail" style="color: #27ae60;">Jawaban Benar: <b>${benar}</b></p>
+                    <p class="result-detail" style="color: #c0392b;">Jawaban Salah: <b>${salah}</b></p>
+                    
+                    <button class="btn-action" style="margin-top:20px; width:auto;" onclick="bukaDashboard()">Kembali ke Dashboard</button>
+                </div>
+            `;
+
             document.getElementById('kuis-isi').innerHTML = html;
         }
 
+        // Jalankan saat load pertama kali
         init();
     </script>
 </body>
