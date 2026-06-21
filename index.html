@@ -1,146 +1,168 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <!-- [CSS Anda Tetap Sama Seperti Yang Anda Berikan - Saya Potong Untuk Efisiensi] -->
-  <style>
-    /* Gunakan CSS asli Anda di sini */
-    :root { --primary-dark: #4c2e35; --sidebar-bg: #fae1e6; --sidebar-hover: #f3c1cb; --accent-pink: #f0a3b3; --active-highlight: #d47285; --bg-main: #fff5f6; --text-main: #2e1f22; --text-muted: #8c7377; --success: #6ba67e; --warning: #e0a96d; --danger: #d9534f; }
-    /* ... (Silakan masukkan CSS asli Anda di sini) ... */
-    body { display: flex; height: 100vh; background-color: var(--bg-main); overflow: hidden; font-family: 'Inter', sans-serif; }
-    .sidebar { width: 320px; background-color: var(--sidebar-bg); }
-    .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
-    .content-card { display: none; padding: 40px; }
-    .content-card.active { display: block; }
-    .question-box { background: white; padding: 20px; margin: 10px 0; border: 1px solid #ddd; }
-  </style>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Academic - Nurfauzia Hidayat</title>
+    <!-- Font & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS Profesional -->
+    <style>
+        :root {
+            --primary-dark: #4c2e35; --sidebar-bg: #fae1e6; --sidebar-hover: #f3c1cb;
+            --sidebar-text: #5c3a41; --accent-pink: #f0a3b3; --active-highlight: #d47285;
+            --bg-main: #fff5f6; --text-main: #2e1f22; --text-muted: #8c7377;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { display: flex; height: 100vh; background-color: var(--bg-main); overflow: hidden; }
+        .sidebar { width: 320px; background-color: var(--sidebar-bg); color: var(--sidebar-text); display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(76, 46, 53, 0.05); }
+        .sidebar-profile { padding: 25px 20px; text-align: center; background-color: var(--sidebar-hover); }
+        .sidebar-scroll { overflow-y: auto; flex-grow: 1; padding: 15px 0; }
+        .dropdown-btn { width: 100%; padding: 12px 20px; background: none; border: none; text-align: left; font-weight: 600; cursor: pointer; color: var(--sidebar-text); display: flex; justify-content: space-between; }
+        .dropdown-container { display: none; background-color: rgba(255, 255, 255, 0.4); list-style: none; padding: 5px 0; }
+        .dropdown-item { padding: 9px 20px 9px 35px; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .dropdown-item:hover { background-color: var(--accent-pink); }
+        .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; }
+        .top-header { background: #fff; padding: 20px 30px; border-bottom: 1px solid #f0d5da; font-weight: 600; color: var(--primary-dark); }
+        .main-content { padding: 30px; overflow-y: auto; }
+        .content-card { background: white; padding: 40px; border-radius: 12px; display: none; border-top: 5px solid var(--accent-pink); }
+        .content-card.active { display: block; }
+        .btn-action { padding: 12px; background: var(--primary-dark); color: white; border: none; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 10px; font-weight: 600; }
+        .question-box { background: #fffbfb; padding: 20px; border: 1px solid #f0d5da; border-radius: 8px; margin-bottom: 15px; }
+        .sidebar-footer { padding: 15px; background-color: var(--sidebar-hover); text-align: center; font-size: 10.5px; color: var(--primary-dark); font-weight: 500; }
+    </style>
 </head>
 <body>
 
-  <!-- [Sidebar & HTML Struktur Anda Tetap Sama] -->
-  <nav class="sidebar">
-      <div class="sidebar-profile"><h2>Nurfauzia Hidayat</h2></div>
-      <div class="sidebar-scroll">
-          <button class="btn-dashboard-portal" onclick="openPortalRoot()">Dashboard</button>
-          <div class="menu-category">Mata Kuliah</div>
-          <ul id="drop-mk" class="dropdown-container" style="display:block;"></ul>
-          <div class="menu-category">Kuis</div>
-          <ul id="drop-kuis" class="dropdown-container" style="display:block;"></ul>
-      </div>
-  </nav>
+    <nav class="sidebar">
+        <div class="sidebar-profile">
+            <h2>Nurfauzia Hidayat</h2>
+            <p>Uji Kompetensi Administrasi Bisnis</p>
+        </div>
+        <div class="sidebar-scroll">
+            <button class="dropdown-btn" onclick="toggleDropdown('drop-materi')"><span>📚 Materi Kuliah</span> <span>▼</span></button>
+            <ul id="drop-materi" class="dropdown-container"></ul>
+            <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')"><span>📝 Kuis Mata Kuliah</span> <span>▼</span></button>
+            <ul id="drop-kuis" class="dropdown-container"></ul>
+        </div>
+        <div class="sidebar-footer">© 2026 - Nurfauzia Hidayat</div>
+    </nav>
 
-  <div class="main-wrapper">
-    <main class="main-content" id="app">
-        <!-- Tab Materi & Kuis Akan Dimuat Disini -->
-        <div id="materi-tab" class="content-card"><h1>Materi</h1><div id="materi-isi"></div></div>
-        <div id="kuis-tab" class="content-card"><h1>Kuis</h1><div id="soal-isi"></div></div>
-    </main>
-  </div>
+    <div class="main-wrapper">
+        <header class="top-header" id="header-title">Dashboard Utama</header>
+        <main class="main-content">
+            <div id="materi-tab" class="content-card">
+                <h1 id="materi-judul">Pilih Materi</h1>
+                <div id="materi-isi"></div>
+            </div>
+            <div id="kuis-tab" class="content-card">
+                <h1 id="kuis-judul">Pilih Kuis</h1>
+                <div id="kuis-isi"></div>
+            </div>
+        </main>
+    </div>
 
-  <script>
-    // DATA DATABASE MATA KULIAH
-    const dataMataKuliah = [
-      { 
-        nama: "Pancasila", 
-        materi: "Pancasila sebagai dasar negara dan pandangan hidup bangsa Indonesia.",
-        soal: [
-          { q: "Sila ke-3 berbunyi?", o: ["Persatuan Indonesia", "Keadilan Sosial", "Ketuhanan", "Kemanusiaan"], k: "A" },
-          { q: "Lambang sila ke-1?", o: ["Bintang", "Rantai", "Pohon Beringin", "Padi Kapas"], k: "A" },
-          { q: "Tahun lahir Pancasila?", o: ["1945", "1946", "1947", "1948"], k: "A" },
-          { q: "Siapa pengusul nama Pancasila?", o: ["Soekarno", "Hatta", "Yamin", "Supomo"], k: "A" },
-          { q: "Sila ke-5 dilambangkan?", o: ["Padi Kapas", "Rantai", "Kepala Banteng", "Bintang"], k: "A" }
-        ]
-      },
-      { 
-        nama: "Matematika", 
-        materi: "Studi angka dan logika. 1+1=2.",
-        soal: [
-          { q: "Hasil dari 5x5?", o: ["25", "20", "30", "15"], k: "A" },
-          { q: "Akar 9?", o: ["3", "2", "4", "5"], k: "A" },
-          { q: "Sisi segitiga?", o: ["3", "4", "2", "5"], k: "A" },
-          { q: "Hasil 10/2?", o: ["5", "2", "4", "6"], k: "A" },
-          { q: "Sudut siku-siku?", o: ["90", "45", "180", "360"], k: "A" }
-        ]
-      },
-      { 
-        nama: "Bahasa Indonesia", 
-        materi: "Tata bahasa, ejaan, dan literasi Indonesia.",
-        soal: [
-          { q: "Ibu kota Indonesia?", o: ["Jakarta", "Bandung", "Surabaya", "Medan"], k: "A" },
-          { q: "Antonim besar?", o: ["Kecil", "Panjang", "Lebar", "Tinggi"], k: "A" },
-          { q: "Tanda baca di akhir kalimat?", o: [".", ",", "!", "?"], k: "A" },
-          { q: "Kata dasar 'berlari'?", o: ["Lari", "Ber", "Larian", "Berla"], k: "A" },
-          { q: "Apa itu KBBI?", o: ["Kamus", "Buku", "Jurnal", "Majalah"], k: "A" }
-        ]
-      },
-      { 
-        nama: "Bahasa Inggris", 
-        materi: "Basic English grammar and vocabulary.",
-        soal: [
-          { q: "English of 'Makan'?", o: ["Eat", "Drink", "Sleep", "Run"], k: "A" },
-          { q: "I ... a student.", o: ["Am", "Is", "Are", "Be"], k: "A" },
-          { q: "Opposite of 'Big'?", o: ["Small", "Short", "Thin", "Fat"], k: "A" },
-          { q: "Color of the sky?", o: ["Blue", "Red", "Green", "Yellow"], k: "A" },
-          { q: "How are you?", o: ["I'm fine", "Yes", "No", "Thanks"], k: "A" }
-        ]
-      },
-      { 
-        nama: "Pendidikan Agama", 
-        materi: "Etika, moral, dan kerohanian.",
-        soal: [
-          { q: "Kitab suci umat Islam?", o: ["Al-Qur'an", "Injil", "Taurat", "Wedha"], k: "A" },
-          { q: "Sifat wajib Tuhan?", o: ["Wujud", "Mati", "Lapar", "Haus"], k: "A" },
-          { q: "Tujuan ibadah?", o: ["Ibadah", "Main", "Bekerja", "Tidur"], k: "A" },
-          { q: "Berbuat baik disebut?", o: ["Amal", "Dosa", "Buruk", "Jahat"], k: "A" },
-          { q: "Ciptaan Tuhan?", o: ["Alam", "Robot", "Imajinasi", "Mimpi"], k: "A" }
-        ]
-      },
-      { 
-        nama: "Informatika", 
-        materi: "Komputer, perangkat lunak, dan internet.",
-        soal: [
-          { q: "CPU singkatan dari?", o: ["Central Processing Unit", "Computer Process Unit", "Core Power Unit", "Central Power Unit"], k: "A" },
-          { q: "Alat penunjuk di PC?", o: ["Mouse", "Keyboard", "Printer", "Monitor"], k: "A" },
-          { q: "Apa itu RAM?", o: ["Memory", "Storage", "Processor", "Monitor"], k: "A" },
-          { q: "Website untuk browsing?", o: ["Chrome", "Excel", "Word", "Paint"], k: "A" },
-          { q: "Otak komputer?", o: ["Processor", "Harddisk", "Casing", "Kabel"], k: "A" }
-        ]
-      }
-    ];
+    <script>
+        const database = {
+            pancasila: { 
+                nama: "Pancasila", materi: "Pancasila adalah dasar negara yang mengatur kehidupan berbangsa.",
+                soal: [
+                    { q: "Sila ke-3 berbunyi?", a: ["Persatuan Indonesia", "Kemanusiaan", "Ketuhanan", "Keadilan"], k: 0 },
+                    { q: "Lambang sila ke-1?", a: ["Bintang", "Rantai", "Pohon Beringin", "Padi"], k: 0 },
+                    { q: "Tahun lahir Pancasila?", a: ["1945", "1946", "1947", "1948"], k: 0 },
+                    { q: "Pengusul nama Pancasila?", a: ["Soekarno", "Hatta", "Yamin", "Supomo"], k: 0 },
+                    { q: "Sila ke-5 dilambangkan?", a: ["Padi & Kapas", "Bintang", "Rantai", "Banteng"], k: 0 }
+                ]
+            },
+            matematika: { 
+                nama: "Matematika", materi: "Matematika Ekonomi: Mempelajari fungsi, limit, dan turunan.",
+                soal: [
+                    { q: "Hasil dari 5x5?", a: ["25", "20", "30", "15"], k: 0 },
+                    { q: "Akar 9?", a: ["3", "2", "4", "5"], k: 0 },
+                    { q: "Sisi segitiga?", a: ["3", "4", "2", "5"], k: 0 },
+                    { q: "Hasil 10/2?", a: ["5", "2", "4", "6"], k: 0 },
+                    { q: "Sudut siku-siku?", a: ["90", "45", "180", "360"], k: 0 }
+                ]
+            },
+            b_indo: { 
+                nama: "Bahasa Indonesia", materi: "Teknik Penulisan Karya Ilmiah yang baik.",
+                soal: [
+                    { q: "Ibu kota Indonesia?", a: ["Jakarta", "Bandung", "Surabaya", "Medan"], k: 0 },
+                    { q: "Antonim besar?", a: ["Kecil", "Panjang", "Lebar", "Tinggi"], k: 0 },
+                    { q: "Tanda baca akhir kalimat?", a: ["Titik", "Koma", "Seru", "Tanya"], k: 0 },
+                    { q: "Kata dasar 'berlari'?", a: ["Lari", "Ber", "Larian", "Berla"], k: 0 },
+                    { q: "Apa itu KBBI?", a: ["Kamus", "Buku", "Jurnal", "Majalah"], k: 0 }
+                ]
+            },
+            b_inggris: { 
+                nama: "Bahasa Inggris", materi: "Business Correspondence.",
+                soal: [
+                    { q: "English of 'Makan'?", a: ["Eat", "Drink", "Sleep", "Run"], k: 0 },
+                    { q: "I ... a student.", a: ["Am", "Is", "Are", "Be"], k: 0 },
+                    { q: "Opposite of 'Big'?", a: ["Small", "Short", "Thin", "Fat"], k: 0 },
+                    { q: "Color of the sky?", a: ["Blue", "Red", "Green", "Yellow"], k: 0 },
+                    { q: "How are you?", a: ["I'm fine", "Yes", "No", "Thanks"], k: 0 }
+                ]
+            },
+            agama: { 
+                nama: "Pendidikan Agama", materi: "Etika dan Moral.",
+                soal: [
+                    { q: "Kitab suci umat Islam?", a: ["Al-Qur'an", "Injil", "Taurat", "Wedha"], k: 0 },
+                    { q: "Sifat wajib Tuhan?", a: ["Wujud", "Mati", "Lapar", "Haus"], k: 0 },
+                    { q: "Tujuan ibadah?", a: ["Ibadah", "Main", "Bekerja", "Tidur"], k: 0 },
+                    { q: "Berbuat baik disebut?", a: ["Amal", "Dosa", "Buruk", "Jahat"], k: 0 },
+                    { q: "Ciptaan Tuhan?", a: ["Alam", "Robot", "Imajinasi", "Mimpi"], k: 0 }
+                ]
+            },
+            info: { 
+                nama: "Informatika", materi: "Sistem Informasi.",
+                soal: [
+                    { q: "CPU singkatan dari?", a: ["Central Processing Unit", "Core Power", "Compute Unit", "Control Unit"], k: 0 },
+                    { q: "Alat penunjuk di PC?", a: ["Mouse", "Keyboard", "Printer", "Monitor"], k: 0 },
+                    { q: "Apa itu RAM?", a: ["Memory", "Storage", "Processor", "Monitor"], k: 0 },
+                    { q: "Website untuk browsing?", a: ["Chrome", "Excel", "Word", "Paint"], k: 0 },
+                    { q: "Otak komputer?", a: ["Processor", "Harddisk", "Casing", "Kabel"], k: 0 }
+                ]
+            }
+        };
 
-    // Fungsi Render UI (Memasukkan data ke menu)
-    function init() {
-      const mkMenu = document.getElementById('drop-mk');
-      const kuisMenu = document.getElementById('drop-kuis');
-      dataMataKuliah.forEach((mk, i) => {
-        mkMenu.innerHTML += `<li class="dropdown-item" onclick="bukaMateri(${i})">📘 ${mk.nama}</li>`;
-        kuisMenu.innerHTML += `<li class="dropdown-item" onclick="bukaKuis(${i})">📝 ${mk.nama}</li>`;
-      });
-    }
+        function toggleDropdown(id) { document.getElementById(id).style.display = document.getElementById(id).style.display === 'block' ? 'none' : 'block'; }
 
-    function bukaMateri(i) {
-      document.getElementById('materi-tab').classList.add('active');
-      document.getElementById('kuis-tab').classList.remove('active');
-      document.getElementById('materi-isi').innerHTML = `<p>${dataMataKuliah[i].materi}</p>`;
-    }
+        function init() {
+            const mMenu = document.getElementById('drop-materi');
+            const kMenu = document.getElementById('drop-kuis');
+            for (let key in database) {
+                mMenu.innerHTML += `<li class="dropdown-item" onclick="bukaMateri('${key}')">📘 ${database[key].nama}</li>`;
+                kMenu.innerHTML += `<li class="dropdown-item" onclick="bukaKuis('${key}')">📝 ${database[key].nama}</li>`;
+            }
+        }
 
-    function bukaKuis(i) {
-      document.getElementById('materi-tab').classList.remove('active');
-      document.getElementById('kuis-tab').classList.add('active');
-      let html = `<h3>Kuis ${dataMataKuliah[i].nama}</h3>`;
-      dataMataKuliah[i].soal.forEach((s, idx) => {
-        html += `<div class="question-box">
-          <p>${s.q}</p>
-          ${s.o.map(opt => `<button onclick="cek('${s.k}', '${opt[0]}')">${opt}</button>`).join('')}
-        </div>`;
-      });
-      document.getElementById('soal-isi').innerHTML = html;
-    }
-    
-    function cek(kunci, jawab) {
-        alert(kunci == jawab ? "Benar!" : "Salah!");
-    }
+        function bukaMateri(key) {
+            document.getElementById('materi-tab').classList.add('active');
+            document.getElementById('kuis-tab').classList.remove('active');
+            document.getElementById('materi-judul').innerText = database[key].nama;
+            document.getElementById('materi-isi').innerHTML = `<p>${database[key].materi}</p>`;
+            document.getElementById('header-title').innerText = "Materi: " + database[key].nama;
+        }
 
-    window.onload = init;
-  </script>
+        function bukaKuis(key) {
+            document.getElementById('materi-tab').classList.remove('active');
+            document.getElementById('kuis-tab').classList.add('active');
+            document.getElementById('kuis-judul').innerText = "Kuis " + database[key].nama;
+            document.getElementById('header-title').innerText = "Evaluasi: " + database[key].nama;
+            let html = "";
+            database[key].soal.forEach((s, idx) => {
+                html += `<div class="question-box"><p><b>${idx+1}. ${s.q}</b></p>` + 
+                        s.a.map((opt, i) => `<button class="btn-action" style="width:auto; margin-right:10px;" onclick="alert('${i === s.k ? 'Benar!' : 'Salah!'}')">${opt}</button>`).join('') + 
+                        `</div>`;
+            });
+            document.getElementById('kuis-isi').innerHTML = html;
+        }
+
+        init();
+    </script>
 </body>
 </html>
