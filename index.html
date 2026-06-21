@@ -1,102 +1,992 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduPro Dashboard | Platform Belajar Modern</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Portal Academic - Nur Aulia Agustina</title>
+  <style>
+    :root {
+      --primary-dark: #4c2e35;
+      --sidebar-bg: #fae1e6;
+      --sidebar-hover: #f3c1cb;
+      --sidebar-text: #5c3a41;
+      --accent-pink: #f0a3b3;
+      --active-highlight: #d47285;
+      --accent-blue: #cbdcf7;
+      --bg-main: #fff5f6;
+      --text-main: #2e1f22;
+      --text-muted: #8c7377;
+      --success: #6ba67e;
+      --warning: #e0a96d;
+      --danger: #d9534f;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: var(--bg-main);
+      overflow: hidden;
+    }
+
+    /* SIDEBAR NAVIGATION */
+    .sidebar {
+      width: 320px;
+      background-color: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      box-shadow: 4px 0 15px rgba(76, 46, 53, 0.05);
+    }
+
+    .sidebar-profile {
+      padding: 25px 20px;
+      text-align: center;
+      background-color: var(--sidebar-hover);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .sidebar-profile .icon {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-profile h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--primary-dark);
+    }
+
+    .sidebar-profile p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .sidebar-scroll {
+      overflow-y: auto;
+      flex-grow: 1;
+      padding: 15px 0;
+    }
+
+    .btn-portal-container {
+      padding: 0 15px 15px 15px;
+    }
+
+    .btn-dashboard-portal {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--accent-pink);
+      color: var(--sidebar-text);
+      padding: 12px;
+      border-radius: 6px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .btn-dashboard-portal:hover {
+      background: var(--accent-pink);
+    }
+
+    .btn-dashboard-portal.active {
+      background: var(--active-highlight) !important;
+      color: white !important;
+      border-color: var(--primary-dark);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .menu-category {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      padding: 10px 20px 5px 20px;
+      font-weight: 700;
+    }
+
+    .dropdown-btn {
+      width: 100%;
+      background: none;
+      border: none;
+      color: var(--sidebar-text);
+      padding: 12px 20px;
+      text-align: left;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .dropdown-btn:hover {
+      background-color: var(--sidebar-hover);
+    }
+
+    .dropdown-container {
+      display: none;
+      background-color: rgba(255, 255, 255, 0.4);
+      list-style: none;
+      padding: 5px 0;
+    }
+
+    .dropdown-item {
+      padding: 9px 20px 9px 35px;
+      font-size: 12.5px;
+      color: var(--sidebar-text);
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--accent-pink);
+    }
+
+    .dropdown-item.active {
+      background-color: var(--active-highlight) !important;
+      color: #ffffff !important;
+      font-weight: 700;
+      border-left: 5px solid var(--primary-dark);
+    }
+
+    .sidebar-footer {
+      padding: 15px;
+      background-color: var(--sidebar-hover);
+      border-top: 1px solid rgba(0,0,0,0.05);
+      font-size: 10.5px;
+      text-align: center;
+      color: var(--primary-dark);
+      font-weight: 500;
+    }
+
+    /* MAIN CONTENT AREA */
+    .main-wrapper {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-header {
+      background: #fff;
+      padding: 18px 30px;
+      border-bottom: 1px solid #f0d5da;
+      font-weight: 600;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .main-content {
+      padding: 30px;
+      overflow-y: auto;
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .content-card {
+      width: 100%;
+      max-width: 1000px;
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(76, 46, 53, 0.02);
+      border-top: 5px solid var(--accent-pink);
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .content-card.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .portal-welcome-box {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .portal-welcome-box .grad-cap {
+      font-size: 4.5rem;
+      color: var(--accent-pink);
+      margin-bottom: 15px;
+    }
+    .portal-welcome-box h1 {
+      font-size: 2.2rem;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: var(--primary-dark);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #fff0f2;
+      font-size: 1.6rem;
+    }
+
+    /* TABLES */
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 13.5px;
+    }
+    .styled-table th, .styled-table td {
+      padding: 12px 15px;
+      border: 1px solid #f0d5da;
+    }
+    .styled-table th {
+      background-color: #fff5f6;
+      color: var(--primary-dark);
+      text-align: left;
+      font-weight: 600;
+    }
+
+    /* MATERI & EXAM UI */
+    .exam-header {
+      display: flex;
+      justify-content: space-between;
+      background: #fff5f6;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      border-left: 4px solid var(--accent-pink);
+      font-size: 13.5px;
+      color: var(--primary-dark);
+    }
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    .student-badge-card {
+      background: linear-gradient(135deg, var(--sidebar-bg), #fff);
+      border: 1px dashed var(--active-highlight);
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-    <style>
-        :root {
-            --bg: #F8FAFC;
-            --sidebar: #1E293B;
-            --accent: #38BDF8;
-            --primary: #6366F1;
-            --text: #334155;
-            --card-bg: #FFFFFF;
-        }
+    .question-box {
+      background-color: #fffbfb;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #f0d5da;
+      transition: border 0.3s;
+    }
+    
+    .question-box.answered {
+      border-left: 5px solid var(--success);
+      background-color: #f7fdf9;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        
-        body { background: var(--bg); display: flex; min-height: 100vh; color: var(--text); }
+    .question-text {
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .option-label {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      background: white;
+      border: 1px solid #f0d5da;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+    .option-label:hover { background: var(--sidebar-bg); }
+    .option-label input { margin-right: 10px; }
 
-        /* Sidebar Styling */
-        .sidebar { width: 260px; background: var(--sidebar); color: white; padding: 20px; }
-        .brand { font-size: 20px; font-weight: 800; margin-bottom: 40px; color: var(--accent); display: flex; align-items: center; gap: 10px; }
-        .nav-item { padding: 15px; cursor: pointer; border-radius: 8px; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .nav-item:hover, .nav-item.active { background: var(--primary); }
+    .btn-action {
+      padding: 12px;
+      background: var(--primary-dark);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+    }
+    .btn-action:hover { background: #331e22; }
 
-        /* Main Content */
-        .content { flex: 1; padding: 40px; overflow-y: auto; }
-        .page { display: none; }
-        .page.active { display: block; animation: fadeIn 0.4s; }
+    .btn-cert {
+      padding: 6px 12px;
+      background: linear-gradient(135deg, #a3707c, var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      white-space: nowrap;
+    }
+    .btn-cert:hover {
+      filter: brightness(1.1);
+    }
 
-        /* Modern Grid Cards */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); padding: 25px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); border: 1px solid #E2E8F0; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .login-kuis-container {
+      max-width: 450px;
+      margin: 30px auto;
+      padding: 30px;
+      background: #fffbfb;
+      border: 1px solid #f0d5da;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+    }
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #f0d5da;
+      border-radius: 6px;
+      font-size: 13.5px;
+      background-color: #fff;
+      color: var(--text-main);
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--active-highlight);
+    }
+    .token-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* AREA CETAK SERTIFIKAT */
+    #print-certificate-zone {
+      display: none;
+    }
+
+    @media print {
+      body * { display: none !important; }
+      #print-certificate-zone { 
+        display: block !important; 
+        width: 100vw; 
+        height: 100vh;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        background: white;
+      }
+      #cert-canvas {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <nav class="sidebar">
-        <div class="brand"><i class="fa-solid fa-rocket"></i> EDU-PRO</div>
-        <div class="nav-item active" onclick="showPage('home')"><i class="fa-solid fa-house"></i> Dashboard</div>
-        <div class="nav-item" onclick="showPage('materi')"><i class="fa-solid fa-book"></i> Materi Kuliah</div>
-        <div class="nav-item" onclick="showPage('kuis')"><i class="fa-solid fa-pen-nib"></i> Pusat Kuis</div>
-    </nav>
+  <!-- SIDEBAR NAVIGATION -->
+  <nav class="sidebar">
+    <div class="sidebar-profile">
+      <div class="icon">🏛️</div>
+      <h2>Nur Aulia Agustina</h2>
+      <p>Uji Kompetensi Administrasi Bisnis</p>
+    </div>
+    
+    <div class="sidebar-scroll">
+      <div class="btn-portal-container">
+        <button class="btn-dashboard-portal active" id="btn-portal-root" onclick="openPortalRoot()">
+          💻 Dashboard Portal
+        </button>
+      </div>
 
-    <main class="content">
-        <section id="home" class="page active">
-            <h1>Selamat Datang Kembali!</h1>
-            <p>Pilih materi atau tantang diri Anda dengan kuis mata kuliah hari ini.</p>
-            <br>
-            <div class="grid">
-                <div class="card"><h3>Statistik Belajar</h3><p>Anda telah menyelesaikan 12 modul minggu ini.</p></div>
-                <div class="card"><h3>Rekomendasi</h3><p>Coba kuis Matematika untuk mengasah logika!</p></div>
+      <div class="menu-category">Akademik & Pembelajaran</div>
+      
+      <button class="dropdown-btn" onclick="toggleDropdown('drop-mk')">
+        <span>🎓 Mata Kuliah</span> <span>▼</span>
+      </button>
+      <ul id="drop-mk" class="dropdown-container"></ul>
+
+      <button class="dropdown-btn" onclick="toggleDropdown('drop-silabus')">
+        <span>📄 Silabus & Kurikulum</span> <span>▼</span>
+      </button>
+      <ul id="drop-silabus" class="dropdown-container">
+        <li id="item-silabus-file" class="dropdown-item" onclick="openSilabusGeneral()">Silabus Akademik 2026b</li>
+      </ul>
+
+      <button class="dropdown-btn" onclick="toggleDropdown('drop-kuis')">
+        <span>📝 Kuis Mata Kuliah</span> <span>▼</span>
+      </button>
+      <ul id="drop-kuis" class="dropdown-container"></ul>
+
+      <button class="dropdown-btn" onclick="toggleDropdown('drop-rekap')">
+        <span>📊 Rekap & Penilaian</span> <span>▼</span>
+      </button>
+      <ul id="drop-rekap" class="dropdown-container">
+        <li id="item-rekap-tab" class="dropdown-item" onclick="openRekapNilaiTab()">Daftar Nilai Kuis</li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      © 2026 - Nur Aulia Agustina<br> Uji Kompetensi Administrasi Bisnis
+    </div>
+  </nav>
+
+  <!-- MAIN WRAPPER FRAMEWORK -->
+  <div class="main-wrapper">
+    <header class="top-header">
+      <span id="top-nav-icon">💻</span> <span id="top-nav-title">Dashboard Portal</span>
+    </header>
+
+    <main class="main-content">
+
+      <!-- TAB 1: PORTAL HOME -->
+      <div id="portal-root-tab" class="content-card active">
+        <div class="portal-welcome-box">
+          <div class="grad-cap">🎓</div>
+          <h1>Selamat Datang</h1>
+          <p style="color: var(--text-muted); font-size:16px; font-weight: 500;">
+            Portal Mata Kuliah Program Studi Administrasi Bisnis
+          </p>
+        </div>
+      </div>
+
+      <!-- TAB 2: MATERI VIEW -->
+      <div id="materi-tab" class="content-card">
+        <h1 id="materi-title">Mata Kuliah</h1>
+        <div id="materi-desc-container" style="line-height:1.6; font-size:14px; color:var(--text-main)"></div>
+      </div>
+
+      <!-- TAB 3: SILABUS -->
+      <div id="silabus-tab" class="content-card">
+        <h1>Silabus Akademik 2026b</h1>
+        <p>Akses berkas kurikulum semester berjalan untuk skema <strong>Administrasi Bisnis</strong>:</p>
+        <table class="styled-table">
+          <thead>
+            <tr><th>Jenis Berkas</th><th>Deskripsi Fungsi</th><th>Tautan Unduhan</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Rencana Pembelajaran Semester (RPS) 2026b</td><td>Silabus Operasional Korporasi & Manajemen Administrasi Bisnis Terbaru</td><td><a href="#" onclick="alert('Mengunduh Silabus...')">Download Silabus_Bisnis_2026b.pdf</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TAB 4: EVALUASI KUIS -->
+      <div id="kuis-tab" class="content-card">
+        <div id="kuis-headline-wrapper" class="exam-header">
+          <div><strong id="kuis-headline-title">Kuis Perkuliahan</strong> — Gerbang Verifikasi Mahasiswa</div>
+        </div>
+
+        <!-- FORM LOGIN KUIS -->
+        <div id="kuis-login-gate" class="login-kuis-container">
+          <h3 style="text-align: center; margin-bottom: 20px; color: var(--primary-dark);">Autentikasi Ujian Kuis</h3>
+          <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="quiz-student-name" placeholder="Contoh: Nur Aulia Agustina">
+          </div>
+          <div class="form-group">
+            <label>NIM (Nomor Induk Mahasiswa)</label>
+            <input type="text" id="quiz-student-nim" placeholder="Contoh: 45223109">
+          </div>
+          <div class="form-group">
+            <label>Kelas / Angkatan</label>
+            <select id="quiz-student-class">
+              <option value="">-- Pilih Kelas Anda --</option>
+              <option value="AB-A">Administrasi Bisnis - Kelas A</option>
+              <option value="AB-B">Administrasi Bisnis - Kelas B</option>
+              <option value="AB-C">Administrasi Bisnis - Kelas C</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Token Ujian Kuis</label>
+            <input type="text" id="quiz-token" placeholder="Masukkan token">
+            <div class="token-hint">*Gunakan token simulasi standar: <strong>BISNIS2026</strong></div>
+          </div>
+          <button class="btn-action" onclick="validateQuizAccess()">Mulai Mengerjakan Ujian</button>
+        </div>
+
+        <!-- PANEL SOAL KUIS -->
+        <div id="quiz-main-questions-panel" style="display: none;">
+          <div class="student-badge-card">
+            <div>
+              <div style="font-weight: 700; color: var(--primary-dark);" id="badge-name">Nama</div>
+              <div style="font-size: 12px; color: var(--text-muted);" id="badge-nim-class">NIM | Kelas</div>
             </div>
-        </section>
+            <div style="text-align: right;">
+              <div id="live-progress-counter" style="font-weight: 700; color: var(--active-highlight); font-size: 14px;">Terjawab: 0 / 20 Soal</div>
+              <div id="anti-cheat-status" style="font-size: 11px; font-weight: 600; color: var(--success);">🛡️ Sistem Keamanan Aktif</div>
+            </div>
+          </div>
 
-        <section id="materi" class="page">
-            <h1>Modul Pembelajaran</h1>
-            <div class="grid" id="materi-list">
-                </div>
-        </section>
+          <div id="questions-box-loader"></div>
+          <button class="btn-action" style="background:var(--success); margin-top:15px;" onclick="processSubmitKuis()">Kirim Form Jawaban</button>
+        </div>
+      </div>
 
-        <section id="kuis" class="page">
-            <h1>Assessment Mata Kuliah</h1>
-            <div class="grid" id="kuis-list">
-                </div>
-        </section>
+      <!-- TAB 5: REKAP NILAI KUIS -->
+      <div id="rekap-tab" class="content-card">
+        <h1>Daftar Nilai Kuis Mandiri</h1>
+        <p>Rekapitulasi nilai perolehan ujian objektif mahasiswa Administrasi Bisnis secara otomatis:</p>
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th style="text-align:center; width:40px;">No</th>
+              <th>Identitas Mahasiswa</th>
+              <th>Nama Mata Kuliah</th>
+              <th style="text-align:center; width:120px;">Beban Evaluasi</th>
+              <th style="text-align:center; width:150px;">Status</th>
+              <th style="text-align:center; width:110px;">Nilai Hasil</th>
+              <th style="text-align:center; width:150px;">Sertifikat</th>
+            </tr>
+          </thead>
+          <tbody id="table-rekap-rows"></tbody>
+        </table>
+      </div>
+
     </main>
+  </div>
 
-    <script>
-        const dataKuliah = [
-            { id: 'mtk', nama: 'Matematika', materi: 'Aljabar Linear dan Kalkulus Dasar', icon: 'fa-calculator' },
-            { id: 'indo', nama: 'Bahasa Indonesia', materi: 'Teknik Penulisan Karya Ilmiah', icon: 'fa-pen-to-square' },
-            { id: 'inggris', nama: 'Bahasa Inggris', materi: 'Academic Reading & Writing', icon: 'fa-language' },
-            { id: 'agama', nama: 'Pendidikan Agama', materi: 'Etika Moral dan Sosial', icon: 'fa-mosque' },
-            { id: 'info', nama: 'Informatika', materi: 'Struktur Data & Algoritma', icon: 'fa-code' }
-        ];
+  <!-- CONTAINER CANVAS SERTIFIKAT -->
+  <div id="print-certificate-zone">
+    <canvas id="cert-canvas" width="1120" height="792"></canvas>
+  </div>
 
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            event.currentTarget.classList.add('active');
+  <script>
+    const dataMataKuliah = [
+      { nama: "Aplikasi Komputer Bisnis", desc: "Studi mengenai integrasi perangkat lunak perkantoran tingkat lanjut...", materi: [{ bab: "Bab 1: Otomatisasi Dokumen Kantor", isi: "Mempelajari teknik pembuatan..." }] },
+      { nama: "English for Business Correspondence", desc: "Pengembangan keahlian komunikasi tertulis profesional...", materi: [{ bab: "Bab 1: Dasar-dasar Surel Bisnis Formal", isi: "Aturan penulisan..." }] },
+      { nama: "Kebijakan Bisnis", desc: "Analisis pengambilan keputusan strategis...", materi: [{ bab: "Bab 1: Formulasi Strategi Korporat", isi: "Analisis lingkungan..." }] },
+      { nama: "Kepemimpinan", desc: "Kajian kepemimpinan organisasional...", materi: [{ bab: "Bab 1: Teori dan Gaya Kepemimpinan", isi: "Eksplorasi gaya..." }] },
+      { nama: "Manajemen Portofolio dan Investasi", desc: "Pemahaman instrumen pasar modal...", materi: [{ bab: "Bab 1: Pengenalan Instrumen Pasar Modal", isi: "Perbedaan..." }] },
+      { nama: "Manajemen Sistem Informasi", desc: "Penerapan sistem basis data operasional...", materi: [{ bab: "Bab 1: Arsitektur Sistem Informasi", isi: "Mengenal sistem ERP..." }] },
+      { nama: "Pelayanan Prima", desc: "Standarisasi pelayanan kepuasan pelanggan...", materi: [{ bab: "Bab 1: Konsep Service Excellence", isi: "Prinsip dasar..." }] },
+      { nama: "Pendidikan Kewarganegaraan", desc: "Internalisasi nilai ideologi kebangsaan...", materi: [{ bab: "Bab 1: Geopolitik dan Nusantara", isi: "Memahami..." }] },
+      { nama: "Perilaku Konsumen", desc: "Analisis psikologis motivasi pembelian...", materi: [{ bab: "Bab 1: Faktor Psikologis Pembelian", isi: "Menganalisis..." }] },
+      { nama: "Simulasi Bisnis", desc: "Praktek integratif simulasi pendirian usaha...", materi: [{ bab: "Bab 1: Perencanaan BMC", isi: "Menyusun peta..." }] }
+    ];
+
+    let currentTabId = "portal-root-tab";
+    let activeKuisIndex = 0;
+    let userAnswers = {};
+    let scoresDatabase = {};
+    let isExamActive = false;
+    let cheatCount = 0;
+
+    window.onload = function() {
+      initSidebarMenus();
+      initScoreEngine();
+      initAntiCheatEngine();
+    };
+
+    function initSidebarMenus() {
+      const mkMenu = document.getElementById('drop-mk');
+      const kuisMenu = document.getElementById('drop-kuis');
+      dataMataKuliah.forEach((mk, index) => {
+        mkMenu.innerHTML += `<li id="item-mk-${index}" class="dropdown-item" onclick="openMataKuliah(${index})">📘 ${mk.nama}</li>`;
+        kuisMenu.innerHTML += `<li id="item-kuis-${index}" class="dropdown-item" onclick="openKuisUjian(${index})">➔ Kuis ${mk.nama}</li>`;
+      });
+    }
+
+    function initScoreEngine() {
+      dataMataKuliah.forEach((_, idx) => { 
+        scoresDatabase[idx] = { skor: null, nama: "-", nim: "-", kelas: "-", pelanggaran: 0 }; 
+      });
+      buildRekapTableRows();
+    }
+
+    function initAntiCheatEngine() {
+      document.addEventListener("visibilitychange", function() {
+        if (isExamActive && document.hidden) {
+          cheatCount++;
+          scoresDatabase[activeKuisIndex].pelanggaran = cheatCount;
+          const statusBox = document.getElementById('anti-cheat-status');
+          statusBox.innerText = `⚠️ Terdeteksi Keluar Halaman (${cheatCount}x)`;
+          statusBox.style.color = "var(--danger)";
+          buildRekapTableRows();
+          alert(`PERINGATAN ANTI-CURANG!\nAnda terdeteksi meninggalkan halaman kuis.\nTindakan ini dicatat ke sistem rekap nilai dosen! (Pelanggaran ke-${cheatCount})`);
         }
+      });
+    }
 
-        // Render Data
-        const materiList = document.getElementById('materi-list');
-        const kuisList = document.getElementById('kuis-list');
+    function toggleDropdown(id) {
+      const el = document.getElementById(id);
+      el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
 
-        dataKuliah.forEach(item => {
-            materiList.innerHTML += `<div class="card"><h3><i class="fa-solid ${item.icon}"></i> ${item.nama}</h3><p>${item.materi}</p><button class="btn">Baca Materi</button></div>`;
-            kuisList.innerHTML += `<div class="card"><h3><i class="fa-solid ${item.icon}"></i> Kuis ${item.nama}</h3><p>Uji pemahaman ${item.nama} Anda sekarang.</p><button class="btn" onclick="alert('Memulai kuis ${item.nama}...')">Mulai Kuis</button></div>`;
-        });
-    </script>
+    function highlightActiveSidebarItem(activeId) {
+      document.getElementById('btn-portal-root').classList.remove('active');
+      document.querySelectorAll('.dropdown-item').forEach(item => item.classList.remove('active'));
+      if(activeId) {
+        const targetElement = document.getElementById(activeId);
+        if(targetElement) targetElement.classList.add('active');
+      }
+    }
+
+    function switchActiveTabView(tabId, icon, title, sidebarItemId) {
+      currentTabId = tabId;
+      document.querySelectorAll('.content-card').forEach(card => card.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.getElementById('top-nav-icon').innerText = icon;
+      document.getElementById('top-nav-title').innerText = title;
+      highlightActiveSidebarItem(sidebarItemId);
+    }
+
+    function openPortalRoot() { switchActiveTabView('portal-root-tab', '💻', 'Dashboard Portal', 'btn-portal-root'); }
+    function openSilabusGeneral() { switchActiveTabView('silabus-tab', '📄', 'Silabus Kurikulum', 'item-silabus-file'); }
+
+    function openMataKuliah(idx) {
+      switchActiveTabView('materi-tab', '📘', `Mata Kuliah: ${dataMataKuliah[idx].nama}`, `item-mk-${idx}`);
+      document.getElementById('materi-title').innerText = dataMataKuliah[idx].nama;
+      let materiHtml = `<div class="materi-bab"><h4>${dataMataKuliah[idx].materi[0].bab}</h4><p>${dataMataKuliah[idx].materi[0].isi}</p></div>`;
+      document.getElementById('materi-desc-container').innerHTML = `<div style="background:#fff5f6; padding:20px; border-radius:8px; border-left:4px solid var(--accent-pink); margin-bottom: 20px;"><strong>Deskripsi:</strong><br>${dataMataKuliah[idx].desc}</div><h3>Materi Pembelajaran:</h3><div class="materi-section">${materiHtml}</div>`;
+    }
+
+    function openKuisUjian(idx) {
+      if(isExamActive) {
+        alert("Sistem Mengunci: Selesaikan kuis yang sedang berjalan terlebih dahulu!");
+        return;
+      }
+      activeKuisIndex = idx;
+      switchActiveTabView('kuis-tab', '📝', `Evaluasi Kuis: ${dataMataKuliah[idx].nama}`, `item-kuis-${idx}`);
+      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[activeKuisIndex].nama} — Registrasi`;
+      
+      document.getElementById('quiz-student-name').value = "";
+      document.getElementById('quiz-student-nim').value = "";
+      document.getElementById('quiz-student-class').value = "";
+      document.getElementById('quiz-token').value = "";
+      
+      document.getElementById('kuis-login-gate').style.display = "block";
+      document.getElementById('quiz-main-questions-panel').style.display = "none";
+    }
+
+    function validateQuizAccess() {
+      const nama = document.getElementById('quiz-student-name').value.trim();
+      const nim = document.getElementById('quiz-student-nim').value.trim();
+      const kelas = document.getElementById('quiz-student-class').value;
+      const token = document.getElementById('quiz-token').value.trim();
+
+      if (!nama || !nim || !kelas || !token) {
+        alert("Peringatan: Mohon lengkapi seluruh form identitas dan Token!");
+        return;
+      }
+
+      if (token.toUpperCase() !== "BISNIS2026") {
+        alert("Akses Ditolak: Token ujian kuis salah!");
+        return;
+      }
+
+      alert(`Autentikasi Berhasil!\nSelamat bekerja, ${nama}`);
+      document.getElementById('kuis-headline-title').innerText = `Kuis Aktif: ${dataMataKuliah[activeKuisIndex].nama} — Lembar Ujian`;
+      
+      document.getElementById('badge-name').innerText = nama;
+      document.getElementById('badge-nim-class').innerText = `NIM: ${nim} | Kelas: ${kelas}`;
+      document.getElementById('live-progress-counter').innerText = "Terjawab: 0 / 20 Soal";
+      
+      cheatCount = 0;
+      isExamActive = true;
+      document.getElementById('anti-cheat-status').innerText = "🛡️ Sistem Keamanan Aktif";
+      document.getElementById('anti-cheat-status').style.color = "var(--success)";
+
+      document.getElementById('kuis-login-gate').style.display = "none";
+      document.getElementById('quiz-main-questions-panel').style.display = "block";
+      
+      scoresDatabase[activeKuisIndex] = { skor: "Mengerjakan", nama: nama, nim: nim, kelas: kelas, pelanggaran: 0 };
+      buildRekapTableRows();
+      buildQuizQuestions();
+    }
+
+    function buildQuizQuestions() {
+      const qContainer = document.getElementById('questions-box-loader');
+      qContainer.innerHTML = "";
+      for(let i = 1; i <= 20; i++) {
+        let answerKey = `mk-${activeKuisIndex}-soal-${i}`;
+        let block = document.createElement('div');
+        block.className = "question-box";
+        block.id = `box-q-${i}`;
+        block.innerHTML = `
+          <div class="question-text">${i}. Berikut ini yang termasuk ke dalam implementasi praktis atau landasan operasional utama pada subjek ${dataMataKuliah[activeKuisIndex].nama} butir ke-${i} adalah...</div>
+          <div class="options-group">
+            <label class="option-label"><input type="radio" name="${answerKey}" value="A" onchange="recordUserResponse(${i}, '${answerKey}','A')"> A. Prosedur Standard Operating Procedure (SOP) Terverifikasi Industri</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="B" onchange="recordUserResponse(${i}, '${answerKey}','B')"> B. Metode Alternatif Eksperimental Tanpa Mitigasi Risiko</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="C" onchange="recordUserResponse(${i}, '${answerKey}','C')"> C. Konsep Teoritis Pengenalan Tanpa Pengujian Kuantitatif</label>
+            <label class="option-label"><input type="radio" name="${answerKey}" value="D" onchange="recordUserResponse(${i}, '${answerKey}','D')"> D. Asumsi Hipotesis Dasar Berdasarkan Pengamatan Kasual</label>
+          </div>
+        `;
+        qContainer.appendChild(block);
+      }
+    }
+
+    function recordUserResponse(soalNo, key, val) {
+      userAnswers[key] = val;
+      document.getElementById(`box-q-${soalNo}`).classList.add('answered');
+      let answeredCount = 0;
+      for(let i = 1; i <= 20; i++) {
+        if(userAnswers[`mk-${activeKuisIndex}-soal-${i}`]) answeredCount++;
+      }
+      document.getElementById('live-progress-counter').innerText = `Terjawab: ${answeredCount} / 20 Soal`;
+    }
+
+    function processSubmitKuis() {
+      let answeredCount = 0;
+      for(let i = 1; i <= 20; i++) {
+        if(userAnswers[`mk-${activeKuisIndex}-soal-${i}`]) answeredCount++;
+      }
+
+      if(answeredCount < 20) {
+        if(!confirm(`Anda baru menjawab ${answeredCount} dari 20 soal. Yakin ingin mengumpulkan?`)) return;
+      }
+
+      let correctCounter = 0;
+      for(let i = 1; i <= 20; i++) {
+        let answerKey = `mk-${activeKuisIndex}-soal-${i}`;
+        if(userAnswers[answerKey] === "A") correctCounter++; 
+      }
+      
+      let calculatedScore = (correctCounter / 20) * 100;
+      isExamActive = false;
+
+      scoresDatabase[activeKuisIndex].skor = calculatedScore;
+      alert(`Kuis Berhasil Dikirim!\n\nSkor Akhir Anda: ${calculatedScore}`);
+      
+      buildRekapTableRows();
+      openRekapNilaiTab();
+    }
+
+    function openRekapNilaiTab() { switchActiveTabView('rekap-tab', '📊', 'Rekap Hasil Evaluasi', 'item-rekap-tab'); }
+
+    function buildRekapTableRows() {
+      const targetBody = document.getElementById('table-rekap-rows');
+      targetBody.innerHTML = "";
+      
+      dataMataKuliah.forEach((mk, idx) => {
+        let record = scoresDatabase[idx];
+        let statusDisplay = "-";
+        let gradeDisplay = "-";
+        let certDisplay = "-";
+        let identitasDisplay = `<span style="color: var(--text-muted); font-style: italic;">Belum ada data</span>`;
+
+        if (record && record.nama !== "-") {
+          identitasDisplay = `
+            <div style="font-size: 13px; font-weight: 600; color: var(--primary-dark); margin-bottom: 2px;">${record.nama}</div>
+            <div style="font-size: 12px; color: var(--text-main); margin-bottom: 2px;">${record.nim}</div>
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 600;">[${record.kelas}]</div>
+          `;
+
+          if (record.skor === "Mengerjakan") {
+            let cheatWarning = record.pelanggaran > 0 ? `<br><small style="color:var(--danger); font-weight:bold;">⚠️ Curang: ${record.pelanggaran}x</small>` : '';
+            statusDisplay = `<span style="color: var(--warning); font-weight:700; animation: blink 1s infinite;">⏳ Sedang Ujian</span>${cheatWarning}`;
+            gradeDisplay = `<span style="color: var(--text-muted); font-style: italic; font-size:12px;">Menghitung...</span>`;
+            certDisplay = `<span style="color: var(--text-muted); font-style: italic; font-size:12px;">Terkunci</span>`;
+          } 
+          else if (record.skor !== null) {
+            statusDisplay = `<span style="color:var(--success); font-weight:700;">✓ Selesai</span><br><small style="color:var(--text-muted); font-size:10px;">Keluar Tab: ${record.pelanggaran}x</small>`;
+            gradeDisplay = `<strong style="font-size:14px;">${record.skor} / 100</strong>`;
+            certDisplay = `<button class="btn-cert" onclick="generateAndPrintCertificate(${idx})">📜 Unduh Sertifikat</button>`;
+          }
+        } else {
+          statusDisplay = `<span style="color: #b0b0b0;">Belum Diuji</span>`;
+        }
+        
+        targetBody.innerHTML += `
+          <tr>
+            <td style="text-align:center;">${idx + 1}</td>
+            <td>${identitasDisplay}</td>
+            <td><strong>${mk.nama}</strong></td>
+            <td style="text-align:center;">20 Soal PG</td>
+            <td style="text-align:center;">${statusDisplay}</td>
+            <td style="text-align:center; color:var(--primary-dark)">${gradeDisplay}</td>
+            <td style="text-align:center;">${certDisplay}</td>
+          </tr>
+        `;
+      });
+    }
+
+    // ENGINE STRUKTUR CANVAS SERTIFIKAT (ADAPTASI BERDASARKAN LAYOUT sertifikat.jpg + TEMA SOFT PINK)
+    function generateAndPrintCertificate(idx) {
+      const studentData = scoresDatabase[idx];
+      const courseName = dataMataKuliah[idx].nama;
+      
+      const canvas = document.getElementById("cert-canvas");
+      const ctx = canvas.getContext("2d");
+      
+      // 1. BACKGROUND UTAMA (Soft Pink Cerah)
+      ctx.fillStyle = "#fff2f4";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // 2. BINGKAI LUAR TEBAL (Warna Dark Pink/Maroon pekat pengganti Navy Blue)
+      ctx.lineWidth = 24;
+      ctx.strokeStyle = "#4c2e35"; 
+      ctx.strokeRect(30, 30, canvas.width - 60, canvas.height - 60);
+      
+      // 3. BINGKAI DALAM AKSEN EMAS (Sesuai Ornamen sertifikat.jpg)
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#d4af37"; 
+      const marginDalam = 54;
+      ctx.strokeRect(marginDalam, marginDalam, canvas.width - (marginDalam * 2), canvas.height - (marginDalam * 2));
+      
+      // Sudut Lengkung Ornamen
+      const sudutR = 25;
+      const lokasiSudut = [
+        {x: marginDalam, y: marginDalam},
+        {x: canvas.width - marginDalam, y: marginDalam},
+        {x: marginDalam, y: canvas.height - marginDalam},
+        {x: canvas.width - marginDalam, y: canvas.height - marginDalam}
+      ];
+      
+      ctx.lineWidth = 2;
+      lokasiSudut.forEach((pos) => {
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, sudutR, 0, Math.PI * 2);
+        ctx.fillStyle = "#fff2f4";
+        ctx.fill();
+        ctx.stroke();
+      });
+
+      ctx.textAlign = "center";
+      
+      // 4. EMBLEM EMBOSS LOGO ATAS (Simulasi Logo Emas di sertifikat.jpg)
+      const logoY = 150;
+      ctx.fillStyle = "#d4af37";
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, logoY - 20, 25, 0, Math.PI * 2);
+      ctx.fill();
+      
+      ctx.font = "bold 14px 'Segoe UI'";
+      ctx.fillText("★ ★ ★", canvas.width / 2, logoY - 55);
+      
+      ctx.fillStyle = "#5c3a41";
+      ctx.font = "bold 11px 'Segoe UI', sans-serif";
+      ctx.fillText("LEMBAGA SERTIFIKASI KOMPETENSI AKADEMIK", canvas.width / 2, logoY + 22);
+      ctx.fillText("PORTAL DIKTI UTAMA", canvas.width / 2, logoY + 37);
+
+      // 5. JUDUL UTAMA (Font Serif Klasik)
+      ctx.fillStyle = "#4c2e35";
+      ctx.font = "bold 44px 'Georgia', serif";
+      ctx.fillText("Sertifikat Uji Kompetensi", canvas.width / 2, 260);
+      
+      ctx.fillStyle = "#8c7377";
+      ctx.font = "bold 11px 'Segoe UI', sans-serif";
+      ctx.fillText("SERTIFIKAT INI DIANUGERAHKAN SECARA RESMI KEPADA:", canvas.width / 2, 305);
+      
+      // 6. NAMA MAHASISWA (Gaya Tulisan Tangan Indah)
+      ctx.fillStyle = "#d47285"; 
+      ctx.font = "italic bold 42px 'Brush Script MT', 'Zapfino', 'Segoe Script', cursive";
+      ctx.fillText(studentData.nama, canvas.width / 2, 365);
+      
+      // Garis Dekoratif Bawah Nama
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2 - 180, 385);
+      ctx.lineTo(canvas.width / 2 + 180, 385);
+      ctx.strokeStyle = "#d4af37";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Identitas NIM & Kelas
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "600 14px 'Segoe UI', sans-serif";
+      ctx.fillText(`NIM: ${studentData.nim}   •   Kelas: ${studentData.kelas}`, canvas.width / 2, 412);
+
+      // 7. KETERANGAN MATA KULIAH KUIS (Dinamis)
+      ctx.fillStyle = "#5c3a41";
+      ctx.font = "14px 'Segoe UI', sans-serif";
+      ctx.fillText("Dinyatakan telah menyelesaikan evaluasi uji kompetensi akademik berkala pada mata kuliah:", canvas.width / 2, 465);
+      
+      // Highlight Nama Kuis Mata Kuliah
+      ctx.fillStyle = "#4c2e35";
+      ctx.font = "bold 24px 'Georgia', serif";
+      ctx.fillText(`[ Kuis ${courseName} ]`, canvas.width / 2, 505);
+      
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "14px 'Segoe UI', sans-serif";
+      ctx.fillText(`Dengan raihan parameter kelulusan predikat Nilai Hasil Efektif: ${studentData.skor} / 100`, canvas.width / 2, 545);
+
+      // 8. DATA VALIDASI PENANDATANGAN (Revisi Jabatan: Ketua Jurusan & Kaprodi)
+      const footerY = 660;
+      
+      // Sisi Kiri: Ketua Jurusan
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "italic 22px 'Brush Script MT', cursive";
+      ctx.fillText("Dr. Budiman, M.T.", 260, footerY - 20); 
+      ctx.font = "bold 13px 'Segoe UI', sans-serif";
+      ctx.fillText("DR. BUDIMAN, M.T.", 260, footerY);
+      ctx.font = "11px 'Segoe UI', sans-serif";
+      ctx.fillStyle = "#8c7377";
+      ctx.fillText("Ketua Jurusan", 260, footerY + 16);
+      ctx.beginPath(); ctx.moveTo(160, footerY - 5); ctx.lineTo(360, footerY - 5); ctx.strokeStyle = "#f0d5da"; ctx.lineWidth = 1; ctx.stroke();
+
+      // Tengah: Stempel Bulat Merah (Original Quality Seal dari sertifikat.jpg)
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, footerY, 32, 0, Math.PI * 2);
+      ctx.strokeStyle = "#d9534f";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.fillStyle = "#d9534f";
+      ctx.font = "bold 9px 'Segoe UI'";
+      ctx.fillText("PASSED", canvas.width / 2, footerY - 3);
+      ctx.fillText("COMPETENT", canvas.width / 2, footerY + 10);
+
+      // Sisi Kanan: Ketua Program Studi
+      ctx.fillStyle = "#2e1f22";
+      ctx.font = "italic 22px 'Brush Script MT', cursive";
+      ctx.fillText("Hartati, S.E., M.M.", canvas.width - 260, footerY - 20); 
+      ctx.font = "bold 13px 'Segoe UI', sans-serif";
+      ctx.fillText("HARTATI, S.E., M.M.", canvas.width - 260, footerY);
+      ctx.font = "11px 'Segoe UI', sans-serif";
+      ctx.fillStyle = "#8c7377";
+      ctx.fillText("Ketua Program Studi", canvas.width - 260, footerY + 16);
+      ctx.beginPath(); ctx.moveTo(canvas.width - 360, footerY - 5); ctx.lineTo(canvas.width - 160, footerY - 5); ctx.strokeStyle = "#f0d5da"; ctx.lineWidth = 1; ctx.stroke();
+
+      // Kode Seri Sertifikat Keamanan
+      ctx.fillStyle = "#8c7377";
+      ctx.font = "10px monospace";
+      ctx.fillText(`Sistem Verifikasi Digital Keamanan - ID: CERT/2026/PRODI-AB/${idx}/${studentData.nim}`, canvas.width / 2, 750);
+      
+      // Triger Cetak Halaman
+      setTimeout(() => {
+        window.print();
+      }, 300);
+    }
+  </script>
 </body>
 </html>
